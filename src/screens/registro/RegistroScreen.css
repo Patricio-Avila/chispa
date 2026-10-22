@@ -1,0 +1,32 @@
+.registro {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  padding: var(--space-6) var(--space-4)
+    calc(var(--space-6) + env(safe-area-inset-bottom));
+  max-width: 430px;
+  margin-inline: auto;
+}
+
+.registro__header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.registro__sub {
+  color: var(--color-text-muted);
+}
+
+.registro__form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.registro__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}

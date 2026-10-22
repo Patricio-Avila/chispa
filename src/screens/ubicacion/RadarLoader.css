@@ -1,0 +1,48 @@
+.radar-loader {
+  position: relative;
+  width: 140px;
+  height: 140px;
+}
+
+.radar-loader__css {
+  position: absolute;
+  inset: 0;
+}
+
+.radar-loader__css--hidden {
+  visibility: hidden;
+}
+
+/* Pin en CSS puro: gota (círculo con esquina) + punto blanco */
+.radar-loader__pin {
+  position: absolute;
+  left: 46px;
+  top: 32px;
+  width: 48px;
+  height: 48px;
+  background: #c21a5f;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+}
+
+.radar-loader__dot {
+  position: absolute;
+  left: 62px;
+  top: 48px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #ffffff;
+}
+
+.radar-loader__lottie {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}
+
+.radar-loader__lottie--visible {
+  opacity: 1;
+}

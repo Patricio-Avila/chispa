@@ -1,0 +1,62 @@
+.bienvenida {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-6) var(--space-4)
+    calc(var(--space-6) + env(safe-area-inset-bottom));
+}
+
+.bienvenida__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  text-align: center;
+}
+
+.bienvenida__logo {
+  position: relative;
+  width: 96px;
+  height: 96px;
+  margin-bottom: var(--space-2);
+}
+
+.bienvenida__half {
+  position: absolute;
+  top: 13px;
+  width: 40px;
+  height: 64px;
+  border-radius: 20px 20px 0 0;
+}
+
+.bienvenida__half--left {
+  left: 48px;
+  background: #d93a52;
+  transform: rotate(-45deg);
+  transform-origin: 0 100%;
+}
+
+.bienvenida__half--right {
+  left: 8px;
+  background: #b5175a;
+  transform: rotate(45deg);
+  transform-origin: 100% 100%;
+}
+
+.bienvenida__tagline {
+  color: var(--color-text-muted);
+  max-width: 300px;
+}
+
+.bienvenida__footer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  text-align: center;
+}
+
+.bienvenida__demo {
+  color: var(--color-text-muted);
+}

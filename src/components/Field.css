@@ -1,0 +1,20 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field__label {
+  color: var(--color-text-muted);
+}
+
+.field__hint {
+  font-size: 13px;
+  color: var(--color-text-muted);
+}
+
+.field__error {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-like);
+}

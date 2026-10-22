@@ -2,16 +2,21 @@ import { createHashRouter } from 'react-router-dom'
 import { AppShell } from './AppShell'
 import { LoadingScreen } from '../screens/loading/LoadingScreen'
 import { PlaceholderScreen } from '../screens/placeholder/PlaceholderScreen'
+import { BienvenidaScreen } from '../screens/bienvenida/BienvenidaScreen'
+import { RegistroScreen } from '../screens/registro/RegistroScreen'
+import { MediosScreen } from '../screens/medios/MediosScreen'
+import { UbicacionScreen } from '../screens/ubicacion/UbicacionScreen'
+import { MapaScreen } from '../screens/mapa/MapaScreen'
 
 export const router = createHashRouter([
   { path: '/', element: <LoadingScreen /> },
 
   /* Onboarding y pantallas sin barra inferior */
-  { path: '/bienvenida', element: <PlaceholderScreen title="Bienvenida" phase={2} /> },
-  { path: '/registro', element: <PlaceholderScreen title="Registro rápido" phase={2} /> },
-  { path: '/medios', element: <PlaceholderScreen title="Fotos y video" phase={2} /> },
-  { path: '/ubicacion', element: <PlaceholderScreen title="Pre-permiso de ubicación" phase={2} /> },
-  { path: '/mapa', element: <PlaceholderScreen title="Buscar en el mapa" phase={6} /> },
+  { path: '/bienvenida', element: <BienvenidaScreen /> },
+  { path: '/registro', element: <RegistroScreen /> },
+  { path: '/medios', element: <MediosScreen /> },
+  { path: '/ubicacion', element: <UbicacionScreen /> },
+  { path: '/mapa', element: <MapaScreen /> },
   { path: '/generando', element: <PlaceholderScreen title="Generando perfiles" phase={3} /> },
   { path: '/persona/:id', element: <PlaceholderScreen title="Detalle de perfil" phase={3} /> },
   { path: '/chat/:matchId', element: <PlaceholderScreen title="Chat" phase={4} /> },
