@@ -1,0 +1,29 @@
+.btn {
+  height: 48px;
+  padding: 0 var(--space-6);
+  border: 0;
+  border-radius: var(--radius-pill);
+  font-size: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn--primary {
+  background: var(--gradient-primary);
+  color: var(--color-on-primary);
+  font-weight: 800;
+}
+
+.btn--secondary {
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-border-strong);
+  color: var(--color-text);
+  font-weight: 700;
+}

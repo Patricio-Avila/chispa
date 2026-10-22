@@ -1,0 +1,37 @@
+:root {
+  /* Color */
+  --color-bg: #FFF8F5;
+  --color-surface: #FFFFFF;
+  --color-surface-2: #FFF0EA;
+  --color-border: #F1E3DC;
+  --color-border-strong: #E6D2C9;
+  --color-text: #2A1A1F;
+  --color-text-muted: #7A6268;
+  --gradient-primary: linear-gradient(135deg, #D93A52, #B5175A);
+  --color-primary: #C21A5F;          /* íconos, enlaces, pestaña activa */
+  --color-accent: #FFD166;           /* chip seleccionado, detalles */
+  --color-on-primary: #FFFFFF;
+
+  /* Acciones */
+  --color-skip: #8A7A80;
+  --color-pasar: #D97706;
+  --color-match: #16A34A;
+  --color-like: #E11D74;
+  --color-like-soft: #FDE4EF;
+
+  /* Forma */
+  --radius-sm: 14px;
+  --radius-lg: 24px;
+  --radius-pill: 999px;
+
+  /* Espaciado (base 4) */
+  --space-1: 4px;  --space-2: 8px;  --space-3: 12px;
+  --space-4: 16px; --space-6: 24px; --space-8: 32px;
+
+  /* Sombra */
+  --shadow-card: 0 8px 24px rgba(42, 26, 31, 0.10);
+  --shadow-button: 0 6px 16px rgba(42, 26, 31, 0.10);
+
+  /* Tipografía */
+  --font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+}

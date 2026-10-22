@@ -1,0 +1,15 @@
+.tab-blocked {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  padding: var(--space-6);
+  text-align: center;
+}
+
+.tab-blocked__note {
+  color: var(--color-text-muted);
+  max-width: 320px;
+}

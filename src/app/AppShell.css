@@ -1,0 +1,23 @@
+.app-shell {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-shell__content {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+/* Desde 768 px: riel lateral izquierdo y contenido centrado a máx. 430 px */
+@media (min-width: 768px) {
+  .app-shell {
+    flex-direction: row-reverse;
+  }
+
+  .app-shell__content > * {
+    max-width: 430px;
+    margin-inline: auto;
+  }
+}
