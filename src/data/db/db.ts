@@ -64,6 +64,24 @@ export async function query<T>(
   return result.rows
 }
 
+export type QueryFn = <T>(sql: string, params?: unknown[]) => Promise<T[]>
+
+/** Agrupa muchas escrituras en una transacción: una sola sincronización
+ *  a IndexedDB en lugar de una por query (clave para sembrar zonas). */
+export async function withTransaction<T>(
+  fn: (txQuery: QueryFn) => Promise<T>,
+): Promise<T> {
+  const db = getDb()
+  const result = await db.transaction(async (tx) => {
+    const txQuery: QueryFn = async <R>(sql: string, params?: unknown[]) => {
+      const res = await tx.query<R>(sql, params)
+      return res.rows
+    }
+    return fn(txQuery)
+  })
+  return result as T
+}
+
 export async function getMeta<T>(key: string): Promise<T | null> {
   const rows = await query<{ value: T }>(
     'select value from app_meta where key = $1',

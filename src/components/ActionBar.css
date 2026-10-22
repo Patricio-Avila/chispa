@@ -1,0 +1,38 @@
+.action-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+}
+
+.action-bar__btn {
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-button);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-bar__btn:disabled {
+  opacity: 0.5;
+}
+
+.action-bar__btn--skip {
+  width: 52px;
+  height: 52px;
+  color: var(--color-skip);
+}
+
+.action-bar__btn--pasar {
+  width: 44px;
+  height: 44px;
+  color: var(--color-pasar);
+}
+
+.action-bar__btn--match {
+  width: 60px;
+  height: 60px;
+  color: var(--color-match);
+}

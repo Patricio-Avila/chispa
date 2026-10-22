@@ -18,10 +18,26 @@
   z-index: 0;
 }
 
-.mapa__notice {
+.mapa__back {
   position: absolute;
   top: calc(var(--space-3) + env(safe-area-inset-top));
   left: var(--space-3);
+  z-index: 600;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-button);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mapa__notice {
+  position: absolute;
+  top: calc(var(--space-3) + env(safe-area-inset-top));
+  left: calc(var(--space-3) + 52px);
   right: var(--space-3);
   z-index: 500;
   padding: var(--space-3) var(--space-4);

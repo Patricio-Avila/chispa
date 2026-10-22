@@ -1,0 +1,67 @@
+.cards-loader {
+  position: relative;
+  width: 140px;
+  height: 140px;
+}
+
+.cards-loader__css {
+  position: absolute;
+  inset: 0;
+}
+
+.cards-loader__css--hidden {
+  visibility: hidden;
+}
+
+.cards-loader__card {
+  position: absolute;
+  width: 68px;
+  height: 88px;
+  border-radius: 12px;
+}
+
+.cards-loader__card--back {
+  left: 44px;
+  top: 24px;
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  transform: rotate(5deg) scale(0.92);
+}
+
+.cards-loader__card--middle {
+  left: 34px;
+  top: 26px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  transform: rotate(-4deg) scale(0.96);
+}
+
+.cards-loader__card--top {
+  left: 36px;
+  top: 22px;
+  background: #d93a52;
+}
+
+.cards-loader__card--top::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 18px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #ffffff;
+  transform: translateX(-50%);
+}
+
+.cards-loader__lottie {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}
+
+.cards-loader__lottie--visible {
+  opacity: 1;
+}

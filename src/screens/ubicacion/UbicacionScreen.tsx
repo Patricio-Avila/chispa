@@ -29,7 +29,7 @@ export function UbicacionScreen() {
         dateTo: null,
       })
       await userRepo.setOnboardingStep('done')
-      navigate('/descubrir', { replace: true })
+      navigate('/generando', { replace: true })
       return
     }
     // Negó, timeout o falló: a elegir zona en el mapa con un aviso breve.

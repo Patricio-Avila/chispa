@@ -1,0 +1,14 @@
+.generando {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  padding: var(--space-6);
+  text-align: center;
+}
+
+.generando__text {
+  color: var(--color-text-muted);
+}

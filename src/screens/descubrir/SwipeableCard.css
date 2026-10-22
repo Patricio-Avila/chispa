@@ -1,0 +1,44 @@
+.swipeable {
+  position: relative;
+  height: 100%;
+  touch-action: none;
+  will-change: transform;
+}
+
+.swipeable__label {
+  position: absolute;
+  top: 24px;
+  padding: 6px 14px;
+  border: 3px solid currentColor;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.85);
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.swipeable__label--skip {
+  right: 20px;
+  color: var(--color-skip);
+  transform: rotate(10deg);
+}
+
+.swipeable__label--match {
+  left: 20px;
+  color: var(--color-match);
+  transform: rotate(-10deg);
+}
+
+.swipeable__label--pasar {
+  left: 50%;
+  transform: translateX(-50%) rotate(-4deg);
+  color: var(--color-pasar);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .swipeable {
+    will-change: auto;
+  }
+}

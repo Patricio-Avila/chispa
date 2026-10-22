@@ -1,0 +1,51 @@
+.profile-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
+}
+
+.profile-card__media {
+  flex: 1;
+  min-height: 0;
+}
+
+.profile-card__info {
+  padding: var(--space-3) 14px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.profile-card__name-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.profile-card__distance {
+  font-size: 13px;
+  color: var(--color-text-muted);
+}
+
+.profile-card__interests {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.profile-card__interest {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  background: var(--color-surface-2);
+}
+
+.profile-card__interest--common {
+  background: var(--color-accent);
+}

@@ -103,6 +103,13 @@ export const localUserRepo: UserRepo = {
     return id
   },
 
+  async setInterests(userId: string, interests: string[]): Promise<void> {
+    await query('update app_user set interests = $2::text[] where id = $1', [
+      userId,
+      interests,
+    ])
+  },
+
   async getOnboardingStep(): Promise<OnboardingStep | null> {
     return getMeta<OnboardingStep>('onboarding_step')
   },

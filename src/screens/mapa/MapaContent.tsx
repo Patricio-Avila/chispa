@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { MapContainer, TileLayer, Circle, Marker, useMapEvents } from 'react-leaflet'
+import { CaretLeft } from '@phosphor-icons/react'
 import { divIcon, type LatLng } from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import { locationRepo, userRepo } from '../../data/repo'
@@ -72,7 +73,7 @@ export function MapaContent() {
       dateTo: null,
     })
     await userRepo.setOnboardingStep('done')
-    navigate('/descubrir', { replace: true })
+    navigate('/generando', { replace: true })
   }
 
   return (
@@ -96,6 +97,15 @@ export function MapaContent() {
           pathOptions={{ color: '#D93A52', weight: 1.5, dashArray: '4 4', fillColor: '#E8434D', fillOpacity: 0.12 }}
         />
       </MapContainer>
+
+      <button
+        type="button"
+        className="mapa__back"
+        aria-label="Volver"
+        onClick={() => navigate(-1)}
+      >
+        <CaretLeft size={20} weight="bold" aria-hidden="true" />
+      </button>
 
       {notice && (
         <p className="mapa__notice" role="status">
