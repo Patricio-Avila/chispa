@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { chatRepo, userRepo, type ConversationSummary } from '../../data/repo'
 import { useUnreadStore } from '../../app/unreadStore'
+import { parseDbDate } from '../../services/relativeTime'
 import './ConversacionesScreen.css'
 
 function timeLabel(iso: string): string {
-  const date = new Date(iso.replace(' ', 'T'))
+  const date = parseDbDate(iso)
   if (Number.isNaN(date.getTime())) return ''
   const now = new Date()
   const sameDay = date.toDateString() === now.toDateString()

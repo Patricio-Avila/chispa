@@ -1,4 +1,5 @@
 import { createHashRouter } from 'react-router-dom'
+import { RootLayout } from './RootLayout'
 import { AppShell } from './AppShell'
 import { LoadingScreen } from '../screens/loading/LoadingScreen'
 import { PlaceholderScreen } from '../screens/placeholder/PlaceholderScreen'
@@ -11,9 +12,13 @@ import { GenerandoScreen } from '../screens/generando/GenerandoScreen'
 import { DescubrirScreen } from '../screens/descubrir/DescubrirScreen'
 import { PersonaScreen } from '../screens/persona/PersonaScreen'
 import { ConversacionesScreen } from '../screens/conversaciones/ConversacionesScreen'
+import { LikesScreen } from '../screens/likes/LikesScreen'
 import { ChatScreen } from '../screens/chat/ChatScreen'
 
 export const router = createHashRouter([
+  {
+    element: <RootLayout />,
+    children: [
   { path: '/', element: <LoadingScreen /> },
 
   /* Onboarding y pantallas sin barra inferior */
@@ -33,9 +38,11 @@ export const router = createHashRouter([
     element: <AppShell />,
     children: [
       { path: '/descubrir', element: <DescubrirScreen /> },
-      { path: '/likes', element: <PlaceholderScreen title="Likes" phase={5} /> },
+      { path: '/likes', element: <LikesScreen /> },
       { path: '/conversaciones', element: <ConversacionesScreen /> },
       { path: '/perfil', element: <PlaceholderScreen title="Perfil" phase={7} /> },
+    ],
+  },
     ],
   },
 ])

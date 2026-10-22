@@ -115,6 +115,19 @@ export interface SwipeRepo {
   record(fromUser: string, toUser: string, action: SwipeAction): Promise<void>
 }
 
+export type LikeTargetKind = 'perfil' | 'foto' | 'video'
+
+export type Liker = {
+  personId: string
+  name: string
+  birthdate: string
+  avatarPath: string | null
+  /** Qué le gustó en su like más reciente. */
+  targetKind: LikeTargetKind
+  likedAt: string
+  seen: boolean
+}
+
 export interface LikeRepo {
   /** mediaId null = like al perfil. */
   addMediaLike(fromUser: string, toUser: string, mediaId: string | null): Promise<void>
@@ -122,6 +135,16 @@ export interface LikeRepo {
   addProfileLikes(fromUsers: string[], toUser: string): Promise<void>
   hasLikedMe(dummyId: string, userId: string): Promise<boolean>
   likersOf(userId: string): Promise<string[]>
+  /** Un renglón por persona que te dio like; no vistos primero. */
+  listLikers(userId: string): Promise<Liker[]>
+  markAllSeen(userId: string): Promise<void>
+  unseenCount(userId: string): Promise<number>
+}
+
+export type NotificationType = 'like_perfil' | 'like_media' | 'match' | 'mensaje'
+
+export interface NotificationRepo {
+  add(userId: string, type: NotificationType, payload: unknown): Promise<void>
 }
 
 export interface MatchRepo {

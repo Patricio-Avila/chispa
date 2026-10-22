@@ -13,6 +13,7 @@ type Tab = {
 
 export function TabBar() {
   const conversationsUnread = useUnreadStore((s) => s.conversations)
+  const likesUnread = useUnreadStore((s) => s.likes)
   const refresh = useUnreadStore((s) => s.refresh)
 
   useEffect(() => {
@@ -21,7 +22,7 @@ export function TabBar() {
 
   const TABS: Tab[] = [
     { to: '/descubrir', label: 'Descubrir', icon: Cards },
-    { to: '/likes', label: 'Likes', icon: Heart },
+    { to: '/likes', label: 'Likes', icon: Heart, badge: likesUnread },
     {
       to: '/conversaciones',
       label: 'Conversaciones',

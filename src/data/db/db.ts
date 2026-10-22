@@ -36,6 +36,12 @@ export function initDb(): Promise<void> {
   return initPromise
 }
 
+/** Query interna, sin esperar migraciones (solo para el runner). */
+async function rawQuery<T>(sql: string, params?: unknown[]): Promise<T[]> {
+  const result = await getDb().query<T>(sql, params)
+  return result.rows
+}
+
 async function runInit(): Promise<void> {
   const db = getDb()
   await db.waitReady
@@ -43,7 +49,10 @@ async function runInit(): Promise<void> {
   await db.exec(
     'create table if not exists app_meta (key text primary key, value jsonb not null)',
   )
-  const current = (await getMeta<number>('schema_version')) ?? 0
+  const versionRows = await rawQuery<{ value: number }>(
+    "select value from app_meta where key = 'schema_version'",
+  )
+  const current = versionRows[0]?.value ?? 0
   for (const migration of MIGRATIONS) {
     if (migration.version > current) {
       // Transacción: si la migración se interrumpe (recarga, error),
@@ -56,12 +65,14 @@ async function runInit(): Promise<void> {
   }
 }
 
+/** Toda query pública garantiza migraciones (los deep links no pasan
+ *  por la pantalla de Carga). */
 export async function query<T>(
   sql: string,
   params?: unknown[],
 ): Promise<T[]> {
-  const result = await getDb().query<T>(sql, params)
-  return result.rows
+  await initDb()
+  return rawQuery<T>(sql, params)
 }
 
 export type QueryFn = <T>(sql: string, params?: unknown[]) => Promise<T[]>
@@ -71,6 +82,7 @@ export type QueryFn = <T>(sql: string, params?: unknown[]) => Promise<T[]>
 export async function withTransaction<T>(
   fn: (txQuery: QueryFn) => Promise<T>,
 ): Promise<T> {
+  await initDb()
   const db = getDb()
   const result = await db.transaction(async (tx) => {
     const txQuery: QueryFn = async <R>(sql: string, params?: unknown[]) => {

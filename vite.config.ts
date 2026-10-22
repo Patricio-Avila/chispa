@@ -32,8 +32,9 @@ export default defineConfig({
         ],
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,svg,png,woff2,wasm,data,lottie}'],
+        globPatterns: ['**/*.{js,css,html,svg,png,jpg,woff2,wasm,data,lottie}'],
         maximumFileSizeToCacheInBytes: 20 * 1024 * 1024,
+        importScripts: ['sw-notifications.js'],
       },
     }),
   ],

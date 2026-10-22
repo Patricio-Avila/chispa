@@ -2,7 +2,17 @@ import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { CaretLeft } from '@phosphor-icons/react'
 import { useDeckStore } from '../descubrir/deckStore'
-import { discoveryRepo, locationRepo, userRepo, type DeckRow } from '../../data/repo'
+import {
+  discoveryRepo,
+  likeRepo,
+  locationRepo,
+  matchRepo,
+  swipeRepo,
+  userRepo,
+  type DeckRow,
+} from '../../data/repo'
+import { compatibilityScore, pairSeed, type ScoringProfile } from '../../sim/scoring'
+import { acceptsMatch } from '../../sim/dummyBehavior'
 import { ageFromBirthdate } from '../registro/age'
 import { ProfileCard, roundedDistance } from '../../components/ProfileCard'
 import { ActionBar } from '../../components/ActionBar'
@@ -15,7 +25,9 @@ export function PersonaScreen() {
   const load = useDeckStore((s) => s.load)
   const act = useDeckStore((s) => s.act)
   const likeMedia = useDeckStore((s) => s.likeMedia)
+  const setLastMatch = useDeckStore((s) => s.setLastMatch)
   const [fallback, setFallback] = useState<(DeckRow & { age: number }) | null>(null)
+  const [likedMe, setLikedMe] = useState(false)
 
   useEffect(() => {
     if (status === 'idle') void load()
@@ -42,7 +54,10 @@ export function PersonaScreen() {
         navigate('/descubrir', { replace: true })
         return
       }
+      const liked = user ? await likeRepo.hasLikedMe(row.id, user.id) : false
+      if (cancelled) return
       setFallback({ ...row, age: ageFromBirthdate(row.birthdate) })
+      setLikedMe(liked)
     })()
     return () => {
       cancelled = true
@@ -54,6 +69,53 @@ export function PersonaScreen() {
 
   async function actAndReturn(action: 'skip' | 'pasar' | 'match') {
     await act(action)
+    navigate('/descubrir')
+  }
+
+  /** Acciones sobre un perfil que no es la tarjeta actual (p. ej. desde
+   *  Likes). Con like previo, Match crea el match al instante (§8.2-9). */
+  async function directAct(action: 'skip' | 'pasar' | 'match') {
+    const target = person
+    const user = await userRepo.getLocalUser()
+    if (!target || !user) return
+    const liked = likedMe || (await likeRepo.hasLikedMe(target.id, user.id))
+    await swipeRepo.record(user.id, target.id, action)
+    if (action === 'match') {
+      const userProfile: ScoringProfile = {
+        id: user.id,
+        gender: user.gender,
+        seeking: user.seeking,
+        age: ageFromBirthdate(user.birthdate),
+        ageMin: user.ageMin,
+        ageMax: user.ageMax,
+        interests: user.interests,
+      }
+      const location = await locationRepo.get(user.id)
+      const score = compatibilityScore(
+        userProfile,
+        {
+          id: target.id,
+          gender: target.gender,
+          seeking: target.seeking,
+          age: target.age,
+          ageMin: target.ageMin,
+          ageMax: target.ageMax,
+          interests: target.interests,
+        },
+        target.distanceKm,
+        location?.radiusKm ?? 10,
+      )
+      const accepted =
+        liked || acceptsMatch(score, target.pickiness, pairSeed(user.id, target.id))
+      if (accepted) {
+        const matchId = await matchRepo.create(user.id, target.id)
+        setLastMatch({
+          matchId,
+          card: { ...target, lastPasar: null, score, likedYou: liked },
+        })
+      }
+    }
+    await load()
     navigate('/descubrir')
   }
 
@@ -101,11 +163,17 @@ export function PersonaScreen() {
         </span>
       </div>
 
-      {isCurrent && (
+      {isCurrent ? (
         <ActionBar
           onSkip={() => void actAndReturn('skip')}
           onPasar={() => void actAndReturn('pasar')}
           onMatch={() => void actAndReturn('match')}
+        />
+      ) : (
+        <ActionBar
+          onSkip={() => void directAct('skip')}
+          onPasar={() => void directAct('pasar')}
+          onMatch={() => void directAct('match')}
         />
       )}
     </div>

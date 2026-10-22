@@ -22,8 +22,9 @@ import {
 import { acceptsMatch } from '../../sim/dummyBehavior'
 import { ageFromBirthdate } from '../registro/age'
 import { dummyOpens, personalityOf } from '../chat/chatFlow'
-import { chatRepo } from '../../data/repo'
+import { chatRepo, mediaRepo, notificationRepo } from '../../data/repo'
 import { useUnreadStore } from '../../app/unreadStore'
+import { notify } from '../../services/notifications'
 
 export type DeckCard = DeckRow & {
   age: number
@@ -53,6 +54,7 @@ type DeckState = {
   setFilters(filters: DiscoverFilters): Promise<void>
   widenDistance(): Promise<void>
   clearMatch(): void
+  setLastMatch(match: LastMatch): void
 }
 
 export const useDeckStore = create<DeckState>((set, get) => ({
@@ -211,6 +213,10 @@ export const useDeckStore = create<DeckState>((set, get) => ({
   clearMatch() {
     set({ lastMatch: null })
   },
+
+  setLastMatch(match: LastMatch) {
+    set({ lastMatch: match })
+  },
 }))
 
 /** Tras un match, 30% de probabilidad (determinista por pareja) de que el
@@ -240,6 +246,15 @@ function scheduleFirstDummyMessage(
           interests: card.interests,
           areaLabel: card.areaLabel,
         },
+      })
+      await notificationRepo.add(user.id, 'mensaje', { matchId, from: card.id })
+      const partnerMedia = await mediaRepo.listByUser(card.id)
+      const avatarPath = partnerMedia.find((m) => m.kind === 'avatar')?.path ?? null
+      await notify({
+        title: card.name,
+        body: `${card.name} te envió un mensaje`,
+        avatarPath,
+        route: `/chat/${matchId}`,
       })
       void useUnreadStore.getState().refresh()
     })()

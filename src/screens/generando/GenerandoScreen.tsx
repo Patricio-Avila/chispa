@@ -9,6 +9,7 @@ import {
 import { zoneKeyFor } from '../../sim/prng'
 import { generateZoneDummies, likesYouOnSeed } from '../../sim/seed'
 import { seedConversationsIfNeeded } from '../../sim/seedConversations'
+import { startIncomingLikes } from '../../sim/incomingLikes'
 import { compatibilityScore, type ScoringProfile } from '../../sim/scoring'
 import { ageFromBirthdate } from '../registro/age'
 import { CardsLoader } from './CardsLoader'
@@ -109,6 +110,9 @@ export function GenerandoScreen() {
         // Primer arranque: 2-3 conversaciones ya empezadas (§8.2-12).
         await seedConversationsIfNeeded(user, userProfile, rows)
       }
+
+      // El onboarding acaba de completarse: arranca el motor de likes.
+      startIncomingLikes()
 
       const remaining = MIN_VISIBLE_MS - (Date.now() - startedAt)
       if (remaining > 0) {
