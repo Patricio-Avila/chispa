@@ -27,11 +27,9 @@ export function roundedDistance(km: number): string {
   return `${Math.max(1, Math.round(km))} km`
 }
 
-/** Carga los medios del perfil; el avatar SVG no necesita archivos. */
+/** Carga los medios del perfil (ilustraciones estáticas, fotos y videos). */
 function useCarouselItems(person: ProfilePerson): CarouselItem[] {
-  const [items, setItems] = useState<CarouselItem[]>([
-    { kind: 'avatar', seed: person.avatarSeed, mediaId: null },
-  ])
+  const [items, setItems] = useState<CarouselItem[]>([])
 
   useEffect(() => {
     let cancelled = false
@@ -41,7 +39,16 @@ function useCarouselItems(person: ProfilePerson): CarouselItem[] {
       const loaded: CarouselItem[] = []
       for (const row of rows) {
         if (row.kind === 'avatar') {
-          loaded.push({ kind: 'avatar', seed: person.avatarSeed, mediaId: row.id })
+          if (row.storage === 'static') {
+            loaded.push({
+              kind: 'photo',
+              url: import.meta.env.BASE_URL + row.path,
+              mediaId: row.id,
+            })
+          } else {
+            // Respaldo: avatares generados por piezas (SVG).
+            loaded.push({ kind: 'avatar', seed: person.avatarSeed, mediaId: row.id })
+          }
         } else if (row.storage === 'static') {
           const base = import.meta.env.BASE_URL
           loaded.push({

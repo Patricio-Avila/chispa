@@ -1,7 +1,30 @@
-/** Piezas del avatar ilustrado (CLAUDE.md §10.1): elegidas de forma
- *  determinista desde avatar_seed. El dibujo vive en AvatarIllustration. */
+/** Avatares ilustrados de los dummies.
+ *
+ *  Producto entregó ilustraciones planas (sin personas reales) que viven en
+ *  public/dummies/avatars/; se asignan por género de forma determinista.
+ *  Las piezas SVG de abajo quedan como respaldo (AvatarIllustration). */
 
 import { mulberry32, pick, type Rng } from './prng'
+import type { Gender } from '../data/repo/types'
+
+const HOMBRE_IMAGES = [
+  'dummies/avatars/hombre-1.jpg',
+  'dummies/avatars/hombre-2.jpg',
+  'dummies/avatars/hombre-3.jpg',
+]
+
+const MUJER_IMAGES = [
+  'dummies/avatars/mujer-1.jpg',
+  'dummies/avatars/mujer-2.jpg',
+  'dummies/avatars/mujer-3.jpg',
+  'dummies/avatars/mujer-4.jpg',
+]
+
+export const AVATAR_IMAGES: Record<Gender, readonly string[]> = {
+  hombre: HOMBRE_IMAGES,
+  mujer: MUJER_IMAGES,
+  no_binario: [...HOMBRE_IMAGES, ...MUJER_IMAGES],
+}
 
 export const BACKGROUNDS = [
   '#FFE3D8', '#FFD166', '#FDE4EF', '#DCEFD6', '#CFE3F5', '#F1E3DC',

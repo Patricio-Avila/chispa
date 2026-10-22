@@ -34,6 +34,18 @@ PowerShell (System.Drawing: gradiente de marca + corazón) y se versionan
 como assets en `public/icons/`. No se agregó ninguna dependencia de build
 para rasterizar.
 
+### Avatares de dummies: ilustraciones provistas por producto
+**Fecha:** 2026-10-21
+
+CLAUDE.md §3 preveía avatares SVG generados por piezas. Producto entregó 7
+ilustraciones planas hechas por IA (3 hombres, 4 mujeres; sin personas
+reales), que se prefieren por calidad visual. Viven en
+`public/dummies/avatars/` (JPG 800×800, ~35 KB c/u) y se asignan por género
+de forma determinista con el PRNG de la zona. El generador SVG por piezas
+(`AvatarIllustration`) queda como respaldo para datos antiguos. Para
+no binario se usa el conjunto completo mientras producto entrega
+ilustraciones propias.
+
 ### Scripts de npm
 `npm run build` corre `tsc --noEmit && vite build` con un solo tsconfig
 (sin project references) para mantener la configuración mínima.

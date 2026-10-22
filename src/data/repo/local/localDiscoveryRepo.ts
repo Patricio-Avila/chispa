@@ -48,8 +48,8 @@ export const localDiscoveryRepo: DiscoveryRepo = {
       ids.push(id)
       await txQuery(
         `insert into media (user_id, kind, position, storage, path)
-         values ($1, 'avatar', 0, 'generated', $2)`,
-        [id, `avatar:${spec.avatarSeed}`],
+         values ($1, 'avatar', 0, 'static', $2)`,
+        [id, spec.avatarPath],
       )
       if (spec.videoIndex !== null && videos[spec.videoIndex]) {
         const video = videos[spec.videoIndex]!

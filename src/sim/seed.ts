@@ -11,6 +11,7 @@ import {
   type Rng,
 } from './prng'
 import { BIO_TEMPLATES, INTERESTS, NAMES, PERSONALITIES } from './catalogs.es'
+import { AVATAR_IMAGES } from './avatars'
 import type { Gender } from '../data/repo/types'
 
 export const SEED_VERSION = 1
@@ -37,6 +38,8 @@ export type DummySpec = {
   personality: (typeof PERSONALITIES)[number]
   pickiness: number
   avatarSeed: number
+  /** Ruta (relativa a BASE_URL) de la ilustración del dummy. */
+  avatarPath: string
   lat: number
   lng: number
   areaLabel: string
@@ -118,6 +121,7 @@ export function generateZoneDummies(
       personality: pick(rng, PERSONALITIES),
       pickiness: floatBetween(rng, 0.2, 0.8),
       avatarSeed: intBetween(rng, 0, 2 ** 31 - 1),
+      avatarPath: pick(rng, AVATAR_IMAGES[gender]),
       lat: position.lat,
       lng: position.lng,
       areaLabel: 'Cerca de ti',
