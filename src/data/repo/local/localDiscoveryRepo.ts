@@ -83,11 +83,13 @@ export const localDiscoveryRepo: DiscoveryRepo = {
       personality: string | null
       pickiness: number | null
       avatar_seed: number | null
+      lat: number
+      lng: number
       distance_km: number
     }>(
       `select id, name, birthdate::text as birthdate, gender, seeking,
               age_min, age_max, bio, interests, area_label, personality,
-              pickiness, avatar_seed,
+              pickiness, avatar_seed, lat, lng,
               haversine_km($2, $3, lat, lng) as distance_km
        from app_user where id = $1`,
       [id, centerLat, centerLng],
@@ -108,6 +110,8 @@ export const localDiscoveryRepo: DiscoveryRepo = {
       personality: row.personality,
       pickiness: row.pickiness ?? 0.5,
       avatarSeed: row.avatar_seed ?? 0,
+      lat: row.lat,
+      lng: row.lng,
       distanceKm: row.distance_km,
       lastPasar: null,
     }
@@ -133,12 +137,14 @@ export const localDiscoveryRepo: DiscoveryRepo = {
       personality: string | null
       pickiness: number | null
       avatar_seed: number | null
+      lat: number
+      lng: number
       distance_km: number
       last_pasar: string | null
     }>(
       `select d.id, d.name, d.birthdate::text as birthdate, d.gender, d.seeking,
               d.age_min, d.age_max, d.bio, d.interests, d.area_label,
-              d.personality, d.pickiness, d.avatar_seed,
+              d.personality, d.pickiness, d.avatar_seed, d.lat, d.lng,
               haversine_km($2, $3, d.lat, d.lng) as distance_km,
               p.last_pasar::text as last_pasar
        from app_user d
@@ -171,6 +177,8 @@ export const localDiscoveryRepo: DiscoveryRepo = {
       personality: row.personality,
       pickiness: row.pickiness ?? 0.5,
       avatarSeed: row.avatar_seed ?? 0,
+      lat: row.lat,
+      lng: row.lng,
       distanceKm: row.distance_km,
       lastPasar: row.last_pasar,
     }))

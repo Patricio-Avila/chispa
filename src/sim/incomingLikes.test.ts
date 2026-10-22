@@ -52,6 +52,8 @@ function row(id: string, overrides: Partial<DeckRow> = {}): DeckRow {
     personality: 'bromista',
     pickiness: 0.5,
     avatarSeed: 1,
+    lat: 25.67,
+    lng: -100.31,
     distanceKm: 5,
     lastPasar: null,
     ...overrides,

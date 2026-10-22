@@ -96,6 +96,7 @@ function offsetPosition(rng: Rng, lat: number, lng: number, radiusKm: number) {
 export function generateZoneDummies(
   zone: ZoneInput,
   videoCount: number,
+  areaLabel = 'Cerca de ti',
 ): DummySpec[] {
   const rng = mulberry32(seedForZone(zone.zoneKey, SEED_VERSION))
   const dummies: DummySpec[] = []
@@ -124,7 +125,7 @@ export function generateZoneDummies(
       avatarPath: pick(rng, AVATAR_IMAGES[gender]),
       lat: position.lat,
       lng: position.lng,
-      areaLabel: 'Cerca de ti',
+      areaLabel,
       zoneKey: zone.zoneKey,
       videoIndex:
         hasVideo && videoCount > 0 ? Math.floor(videoRoll * videoCount) : null,

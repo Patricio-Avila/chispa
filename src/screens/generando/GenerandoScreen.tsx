@@ -10,8 +10,10 @@ import { zoneKeyFor } from '../../sim/prng'
 import { generateZoneDummies, likesYouOnSeed } from '../../sim/seed'
 import { seedConversationsIfNeeded } from '../../sim/seedConversations'
 import { startIncomingLikes } from '../../sim/incomingLikes'
+import { reverseArea } from '../../services/places'
 import { compatibilityScore, type ScoringProfile } from '../../sim/scoring'
 import { ageFromBirthdate } from '../registro/age'
+import { useDeckStore } from '../descubrir/deckStore'
 import { CardsLoader } from './CardsLoader'
 import './GenerandoScreen.css'
 
@@ -57,6 +59,12 @@ export function GenerandoScreen() {
       const seeded = await discoveryRepo.isZoneSeeded(zoneKey)
       if (!seeded) {
         const videos = await loadVideoManifest()
+        // area_label real: colonia más cercana según Photon (§10.1).
+        const areaName = await reverseArea(location.lat, location.lng)
+        if (areaName && location.label === 'Tu zona') {
+          await locationRepo.set(user.id, { ...location, label: areaName })
+          if (!cancelled) setLabel(areaName)
+        }
         const specs = generateZoneDummies(
           {
             zoneKey,
@@ -65,6 +73,7 @@ export function GenerandoScreen() {
             radiusKm: location.radiusKm,
           },
           videos.length,
+          areaName ?? 'Cerca de ti',
         )
         await discoveryRepo.insertDummies(specs, videos)
 
@@ -118,6 +127,8 @@ export function GenerandoScreen() {
       if (remaining > 0) {
         await new Promise((resolve) => setTimeout(resolve, remaining))
       }
+      // La zona (o sus fechas) cambió: la baraja debe recargarse.
+      useDeckStore.getState().invalidate()
       if (!cancelled) navigate('/descubrir', { replace: true })
     })()
 

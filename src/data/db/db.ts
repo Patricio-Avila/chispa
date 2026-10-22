@@ -75,6 +75,16 @@ export async function query<T>(
   return rawQuery<T>(sql, params)
 }
 
+/* Consola de depuración del POC (la base vive solo en este dispositivo). */
+declare global {
+  interface Window {
+    __dbQuery?: typeof query
+  }
+}
+if (typeof window !== 'undefined') {
+  window.__dbQuery = query
+}
+
 export type QueryFn = <T>(sql: string, params?: unknown[]) => Promise<T[]>
 
 /** Agrupa muchas escrituras en una transacción: una sola sincronización

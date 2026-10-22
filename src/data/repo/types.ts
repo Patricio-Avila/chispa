@@ -87,6 +87,8 @@ export type DeckRow = {
   personality: string | null
   pickiness: number
   avatarSeed: number
+  lat: number
+  lng: number
   distanceKm: number
   lastPasar: string | null
 }

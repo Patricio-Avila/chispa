@@ -21,6 +21,7 @@ import {
 } from '../../sim/scoring'
 import { acceptsMatch } from '../../sim/dummyBehavior'
 import { ageFromBirthdate } from '../registro/age'
+import { formatZoneChip } from './zoneChip'
 import { dummyOpens, personalityOf } from '../chat/chatFlow'
 import { chatRepo, mediaRepo, notificationRepo } from '../../data/repo'
 import { useUnreadStore } from '../../app/unreadStore'
@@ -55,6 +56,8 @@ type DeckState = {
   widenDistance(): Promise<void>
   clearMatch(): void
   setLastMatch(match: LastMatch): void
+  /** La zona cambió (Generando): fuerza recargar la baraja. */
+  invalidate(): void
 }
 
 export const useDeckStore = create<DeckState>((set, get) => ({
@@ -155,7 +158,7 @@ export const useDeckStore = create<DeckState>((set, get) => ({
       cards: deck,
       userId: user.id,
       userInterests: user.interests,
-      zoneLabel: location.label,
+      zoneLabel: formatZoneChip(location),
       filters,
     })
   },
@@ -212,6 +215,10 @@ export const useDeckStore = create<DeckState>((set, get) => ({
 
   clearMatch() {
     set({ lastMatch: null })
+  },
+
+  invalidate() {
+    set({ status: 'idle', cards: [] })
   },
 
   setLastMatch(match: LastMatch) {
