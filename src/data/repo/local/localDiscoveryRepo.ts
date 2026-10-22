@@ -64,6 +64,55 @@ export const localDiscoveryRepo: DiscoveryRepo = {
     })
   },
 
+  async getPersonById(
+    id: string,
+    centerLat: number,
+    centerLng: number,
+  ): Promise<DeckRow | null> {
+    const rows = await query<{
+      id: string
+      name: string
+      birthdate: string
+      gender: DeckRow['gender']
+      seeking: DeckRow['gender'][]
+      age_min: number
+      age_max: number
+      bio: string | null
+      interests: string[]
+      area_label: string | null
+      personality: string | null
+      pickiness: number | null
+      avatar_seed: number | null
+      distance_km: number
+    }>(
+      `select id, name, birthdate::text as birthdate, gender, seeking,
+              age_min, age_max, bio, interests, area_label, personality,
+              pickiness, avatar_seed,
+              haversine_km($2, $3, lat, lng) as distance_km
+       from app_user where id = $1`,
+      [id, centerLat, centerLng],
+    )
+    const row = rows[0]
+    if (!row) return null
+    return {
+      id: row.id,
+      name: row.name,
+      birthdate: row.birthdate.slice(0, 10),
+      gender: row.gender,
+      seeking: row.seeking,
+      ageMin: row.age_min,
+      ageMax: row.age_max,
+      bio: row.bio,
+      interests: row.interests,
+      areaLabel: row.area_label ?? 'Cerca de ti',
+      personality: row.personality,
+      pickiness: row.pickiness ?? 0.5,
+      avatarSeed: row.avatar_seed ?? 0,
+      distanceKm: row.distance_km,
+      lastPasar: null,
+    }
+  },
+
   async getDeckRows(
     userId: string,
     zoneKey: string,

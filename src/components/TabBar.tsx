@@ -1,5 +1,7 @@
+import { useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
 import { Cards, Heart, ChatCircle, User, type Icon } from '@phosphor-icons/react'
+import { useUnreadStore } from '../app/unreadStore'
 import './TabBar.css'
 
 type Tab = {
@@ -9,14 +11,26 @@ type Tab = {
   badge?: number
 }
 
-const TABS: Tab[] = [
-  { to: '/descubrir', label: 'Descubrir', icon: Cards },
-  { to: '/likes', label: 'Likes', icon: Heart },
-  { to: '/conversaciones', label: 'Conversaciones', icon: ChatCircle },
-  { to: '/perfil', label: 'Perfil', icon: User },
-]
-
 export function TabBar() {
+  const conversationsUnread = useUnreadStore((s) => s.conversations)
+  const refresh = useUnreadStore((s) => s.refresh)
+
+  useEffect(() => {
+    void refresh()
+  }, [refresh])
+
+  const TABS: Tab[] = [
+    { to: '/descubrir', label: 'Descubrir', icon: Cards },
+    { to: '/likes', label: 'Likes', icon: Heart },
+    {
+      to: '/conversaciones',
+      label: 'Conversaciones',
+      icon: ChatCircle,
+      badge: conversationsUnread,
+    },
+    { to: '/perfil', label: 'Perfil', icon: User },
+  ]
+
   return (
     <nav className="tab-bar" aria-label="Navegación principal">
       {TABS.map(({ to, label, icon: IconComponent, badge }) => (

@@ -10,7 +10,7 @@ import {
   type SwipeAction,
 } from '../../data/repo'
 import { getMeta, setMeta } from '../../data/db/db'
-import { zoneKeyFor, seedForZone, hashString } from '../../sim/prng'
+import { zoneKeyFor, seedForZone, hashString, mulberry32 } from '../../sim/prng'
 import { SEED_VERSION } from '../../sim/seed'
 import {
   compatibilityScore,
@@ -21,6 +21,9 @@ import {
 } from '../../sim/scoring'
 import { acceptsMatch } from '../../sim/dummyBehavior'
 import { ageFromBirthdate } from '../registro/age'
+import { dummyOpens, personalityOf } from '../chat/chatFlow'
+import { chatRepo } from '../../data/repo'
+import { useUnreadStore } from '../../app/unreadStore'
 
 export type DeckCard = DeckRow & {
   age: number
@@ -34,6 +37,8 @@ export type DiscoverFilters = {
 
 type DeckStatus = 'idle' | 'loading' | 'unseeded' | 'ready' | 'empty'
 
+export type LastMatch = { matchId: string; card: DeckCard }
+
 type DeckState = {
   status: DeckStatus
   cards: DeckCard[]
@@ -41,11 +46,13 @@ type DeckState = {
   userInterests: string[]
   zoneLabel: string
   filters: DiscoverFilters
+  lastMatch: LastMatch | null
   load(): Promise<void>
   act(action: SwipeAction): Promise<'match' | null>
   likeMedia(mediaId: string | null): Promise<void>
   setFilters(filters: DiscoverFilters): Promise<void>
   widenDistance(): Promise<void>
+  clearMatch(): void
 }
 
 export const useDeckStore = create<DeckState>((set, get) => ({
@@ -55,6 +62,7 @@ export const useDeckStore = create<DeckState>((set, get) => ({
   userInterests: [],
   zoneLabel: 'Tu zona',
   filters: { interests: [] },
+  lastMatch: null,
 
   async load() {
     set({ status: 'loading' })
@@ -162,8 +170,10 @@ export const useDeckStore = create<DeckState>((set, get) => ({
         card.likedYou ||
         acceptsMatch(card.score, card.pickiness, pairSeed(userId, card.id))
       if (accepted) {
-        await matchRepo.create(userId, card.id)
+        const matchId = await matchRepo.create(userId, card.id)
         result = 'match'
+        set({ lastMatch: { matchId, card } })
+        scheduleFirstDummyMessage(matchId, card, userId)
       }
     }
 
@@ -197,4 +207,41 @@ export const useDeckStore = create<DeckState>((set, get) => ({
     })
     await get().load()
   },
+
+  clearMatch() {
+    set({ lastMatch: null })
+  },
 }))
+
+/** Tras un match, 30% de probabilidad (determinista por pareja) de que el
+ *  dummy escriba primero, entre 20 y 90 s después (CLAUDE.md §10.3).
+ *  Solo mientras la app siga abierta. */
+function scheduleFirstDummyMessage(
+  matchId: string,
+  card: DeckCard,
+  userId: string,
+): void {
+  const rng = mulberry32(pairSeed(userId, card.id) ^ 0xf00d)
+  if (rng() >= 0.3) return
+  const delayMs = (20 + rng() * 70) * 1000
+  window.setTimeout(() => {
+    void (async () => {
+      const existing = await chatRepo.messages(matchId)
+      if (existing.length > 0) return // el usuario ya abrió la conversación
+      const user = await userRepo.getLocalUser()
+      if (!user) return
+      await dummyOpens({
+        matchId,
+        user: { id: user.id, name: user.name, interests: user.interests },
+        partner: {
+          id: card.id,
+          name: card.name,
+          personality: personalityOf(card),
+          interests: card.interests,
+          areaLabel: card.areaLabel,
+        },
+      })
+      void useUnreadStore.getState().refresh()
+    })()
+  }, delayMs)
+}

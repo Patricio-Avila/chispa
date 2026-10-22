@@ -8,6 +8,7 @@ import {
 } from '../../data/repo'
 import { zoneKeyFor } from '../../sim/prng'
 import { generateZoneDummies, likesYouOnSeed } from '../../sim/seed'
+import { seedConversationsIfNeeded } from '../../sim/seedConversations'
 import { compatibilityScore, type ScoringProfile } from '../../sim/scoring'
 import { ageFromBirthdate } from '../registro/age'
 import { CardsLoader } from './CardsLoader'
@@ -104,6 +105,9 @@ export function GenerandoScreen() {
           )
           .map((row) => row.id)
         await likeRepo.addProfileLikes(likerIds, user.id)
+
+        // Primer arranque: 2-3 conversaciones ya empezadas (§8.2-12).
+        await seedConversationsIfNeeded(user, userProfile, rows)
       }
 
       const remaining = MIN_VISIBLE_MS - (Date.now() - startedAt)

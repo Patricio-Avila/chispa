@@ -1,7 +1,9 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { CaretLeft } from '@phosphor-icons/react'
 import { useDeckStore } from '../descubrir/deckStore'
+import { discoveryRepo, locationRepo, userRepo, type DeckRow } from '../../data/repo'
+import { ageFromBirthdate } from '../registro/age'
 import { ProfileCard, roundedDistance } from '../../components/ProfileCard'
 import { ActionBar } from '../../components/ActionBar'
 import './PersonaScreen.css'
@@ -13,21 +15,41 @@ export function PersonaScreen() {
   const load = useDeckStore((s) => s.load)
   const act = useDeckStore((s) => s.act)
   const likeMedia = useDeckStore((s) => s.likeMedia)
+  const [fallback, setFallback] = useState<(DeckRow & { age: number }) | null>(null)
 
   useEffect(() => {
     if (status === 'idle') void load()
   }, [status, load])
 
-  const person = cards.find((card) => card.id === id)
+  const deckPerson = cards.find((card) => card.id === id)
   const isCurrent = cards[0]?.id === id
   const common = new Set(userInterests)
 
+  // Fuera de la baraja (p. ej. "Ver perfil" desde un chat): carga directa.
   useEffect(() => {
-    if (status === 'ready' || status === 'empty') {
-      if (!person) navigate('/descubrir', { replace: true })
+    if (deckPerson || !id || (status !== 'ready' && status !== 'empty')) return
+    let cancelled = false
+    void (async () => {
+      const user = await userRepo.getLocalUser()
+      const location = user ? await locationRepo.get(user.id) : null
+      const row = await discoveryRepo.getPersonById(
+        id,
+        location?.lat ?? 0,
+        location?.lng ?? 0,
+      )
+      if (cancelled) return
+      if (!row) {
+        navigate('/descubrir', { replace: true })
+        return
+      }
+      setFallback({ ...row, age: ageFromBirthdate(row.birthdate) })
+    })()
+    return () => {
+      cancelled = true
     }
-  }, [status, person, navigate])
+  }, [deckPerson, id, status, navigate])
 
+  const person = deckPerson ?? fallback
   if (!person) return null
 
   async function actAndReturn(action: 'skip' | 'pasar' | 'match') {

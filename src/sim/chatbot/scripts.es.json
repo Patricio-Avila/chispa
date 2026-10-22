@@ -1,0 +1,191 @@
+{
+  "bromista": {
+    "delayMsRange": [1000, 3000],
+    "nodes": {
+      "saludo": {
+        "dummy": [
+          "¡Hola {nombre}! Tu match me alegró el día 😄",
+          "Okey, tenemos {interes_comun} en común. Eso ya es medio camino 😏",
+          "¡Apareciste! Ya decía yo que hoy era mi día de suerte ✨",
+          "Hola hola, {nombre}. Prometo que soy más divertida en persona… creo 😅"
+        ],
+        "quickReplies": [
+          { "text": "¡Hola! ¿Cómo va tu semana?", "next": "intereses" },
+          { "text": "Jaja, ¿y la otra mitad?", "next": "intereses" },
+          { "text": "¿Siempre saludas así?", "next": "intereses" }
+        ]
+      },
+      "intereses": {
+        "dummy": [
+          "Va bien, pero mejoraría con alguien que también ame {interes_comun} 👀",
+          "Confiesa: ¿qué tan fan eres de {interes_comun} del 1 al 'es mi personalidad'? 😂",
+          "Mi semana: 80% trabajo, 20% {interes_comun}. Necesito mejores porcentajes jaja",
+          "Si me hablas de {interes_comun} ya no te dejo ir, aviso ⚠️"
+        ],
+        "quickReplies": [
+          { "text": "Es básicamente mi personalidad 😂", "next": "plan" },
+          { "text": "¿Y si lo comprobamos en persona?", "next": "plan" },
+          { "text": "Cuéntame más de ti", "next": "plan" }
+        ]
+      },
+      "plan": {
+        "dummy": [
+          "Propongo algo arriesgado: ¿un café por {zona} el sábado? ☕",
+          "Mira, yo pongo el lugar por {zona} y tú los memes, ¿trato? 😄",
+          "¿Tacos por {zona} esta semana? Prometo no juzgar tu orden… mucho 🌮",
+          "Vamos a {zona} y me cuentas todo con calma, ¿va?"
+        ],
+        "quickReplies": [
+          { "text": "¡Va! El sábado me queda perfecto", "next": "cierre" },
+          { "text": "Trato hecho 🤝", "next": "cierre" },
+          { "text": "Mejor entre semana, ¿puedes?", "next": "cierre" }
+        ]
+      },
+      "cierre": {
+        "dummy": [
+          "¡Hecho! Ya quiero que sea ese día 😄 Te escribo para afinar la hora",
+          "Perfecto, queda. Si llego antes pido por los dos 😏",
+          "Me cae bien este plan. Y tú también, obvio ✨"
+        ],
+        "quickReplies": [
+          { "text": "¡Nos vemos! 🎉", "next": "cierre" },
+          { "text": "Ahí estaré 😄", "next": "cierre" }
+        ]
+      },
+      "fallback": {
+        "dummy": [
+          "Jaja okey, eso no lo vi venir 😂 ¿Me lo explicas con manzanitas?",
+          "Mi cerebro hizo buffering… ¿decías? 😅",
+          "Plot twist que no entendí, pero sigo aquí 😄"
+        ],
+        "quickReplies": [
+          { "text": "Jaja, mejor cuéntame de ti", "next": "intereses" },
+          { "text": "¿Nos vemos un día de estos?", "next": "plan" }
+        ]
+      }
+    }
+  },
+  "directa": {
+    "delayMsRange": [1000, 2000],
+    "nodes": {
+      "saludo": {
+        "dummy": [
+          "Hola {nombre}. Me gustó tu perfil, directo al grano.",
+          "Hola. Vi que te gusta {interes_comun}. Buen inicio.",
+          "Hola {nombre}. Cero rodeos: me caíste bien."
+        ],
+        "quickReplies": [
+          { "text": "Hola, igual tú. ¿Cómo estás?", "next": "intereses" },
+          { "text": "Me gusta la gente directa", "next": "intereses" },
+          { "text": "Buen inicio, sí 😄", "next": "intereses" }
+        ]
+      },
+      "intereses": {
+        "dummy": [
+          "Bien. ¿{interes_comun} es de tus favoritos o solo decoración del perfil?",
+          "¿Qué haces un sábado normal? Yo: {interes_comun} y punto.",
+          "Prefiero conocer en persona que textear semanas. ¿Tú?"
+        ],
+        "quickReplies": [
+          { "text": "Favorito de verdad", "next": "plan" },
+          { "text": "Igual yo, textear cansa", "next": "plan" },
+          { "text": "Depende del plan 😄", "next": "plan" }
+        ]
+      },
+      "plan": {
+        "dummy": [
+          "¿Un café por {zona} el sábado? Una hora, y si fluye, seguimos.",
+          "Propongo: {zona}, jueves saliendo del trabajo. ¿Sí o no?",
+          "Vernos por {zona} esta semana. Tú dices día."
+        ],
+        "quickReplies": [
+          { "text": "Sí. Sábado me va bien", "next": "cierre" },
+          { "text": "Jueves perfecto", "next": "cierre" },
+          { "text": "Va, yo te confirmo día", "next": "cierre" }
+        ]
+      },
+      "cierre": {
+        "dummy": [
+          "Listo. Nos vemos ahí. No llegues tarde 😄",
+          "Perfecto, agendado. Me avisas cualquier cambio.",
+          "Bien. Ya era hora de un plan que sí se concrete."
+        ],
+        "quickReplies": [
+          { "text": "Ahí nos vemos", "next": "cierre" },
+          { "text": "Puntual, lo prometo", "next": "cierre" }
+        ]
+      },
+      "fallback": {
+        "dummy": [
+          "No te entendí. ¿Lo dices de otra forma?",
+          "¿Eso qué significa? Sé directo conmigo 😄",
+          "Perdí el hilo. ¿Decías?"
+        ],
+        "quickReplies": [
+          { "text": "Mejor dime, ¿cuándo nos vemos?", "next": "plan" },
+          { "text": "Nada, cuéntame de ti", "next": "intereses" }
+        ]
+      }
+    }
+  },
+  "timida": {
+    "delayMsRange": [2000, 6000],
+    "nodes": {
+      "saludo": {
+        "dummy": [
+          "Hola {nombre} 😊 qué gusto el match",
+          "Hola… no suelo escribir primero, pero me dio gusto coincidir 😊",
+          "Hola {nombre}, vi que también te gusta {interes_comun} 💛"
+        ],
+        "quickReplies": [
+          { "text": "¡Hola! También me dio gusto 😊", "next": "intereses" },
+          { "text": "¿Cómo va tu día?", "next": "intereses" }
+        ]
+      },
+      "intereses": {
+        "dummy": [
+          "Bien, tranquilo 😊 ¿tú qué tal? Yo ando metida en {interes_comun} últimamente",
+          "Me da un poco de pena el chat, pero {interes_comun} siempre me suelta la lengua jeje",
+          "¿Desde cuándo te gusta {interes_comun}? A mí desde siempre, creo 😊"
+        ],
+        "quickReplies": [
+          { "text": "Desde hace años, ¿y tú?", "next": "plan" },
+          { "text": "A mí también me pasa 😊", "next": "plan" }
+        ]
+      },
+      "plan": {
+        "dummy": [
+          "Oye… ¿te gustaría un café por {zona} un día de estos? Sin presión 😊",
+          "Si te late, podríamos caminar por {zona} el fin… yo invito los helados 🍦",
+          "Me daría gusto conocerte en persona… ¿algo tranquilo por {zona}?"
+        ],
+        "quickReplies": [
+          { "text": "Me encantaría 😊", "next": "cierre" },
+          { "text": "Sí, algo tranquilo suena bien", "next": "cierre" }
+        ]
+      },
+      "cierre": {
+        "dummy": [
+          "Qué bien 😊 ya me dio nervios bonitos jeje… nos ponemos de acuerdo",
+          "Perfecto 💛 te escribo para cuadrar la hora, ¿va?",
+          "Yei 😊 prometo no ser tan tímida en persona… bueno, un poquito"
+        ],
+        "quickReplies": [
+          { "text": "Va, ahí afinamos 😊", "next": "cierre" },
+          { "text": "Los nervios bonitos son buena señal", "next": "cierre" }
+        ]
+      },
+      "fallback": {
+        "dummy": [
+          "Ay, creo que no te entendí bien 😅 ¿me cuentas de nuevo?",
+          "Mmm no sé qué responder a eso jeje 😊 ¿de qué más hablamos?",
+          "Perdón, me perdí un poquito 😅"
+        ],
+        "quickReplies": [
+          { "text": "Jeje, cuéntame de ti mejor", "next": "intereses" },
+          { "text": "¿Y si nos conocemos en persona?", "next": "plan" }
+        ]
+      }
+    }
+  }
+}

@@ -103,6 +103,12 @@ export interface DiscoveryRepo {
     centerLat: number,
     centerLng: number,
   ): Promise<DeckRow[]>
+  /** Un perfil por id (para Detalle desde chat o likes), o null. */
+  getPersonById(
+    id: string,
+    centerLat: number,
+    centerLng: number,
+  ): Promise<DeckRow | null>
 }
 
 export interface SwipeRepo {
@@ -121,6 +127,41 @@ export interface LikeRepo {
 export interface MatchRepo {
   exists(userA: string, userB: string): Promise<boolean>
   create(userA: string, userB: string): Promise<string>
+}
+
+export type ChatMessage = {
+  id: string
+  matchId: string
+  sender: string
+  body: string
+  createdAt: string
+  readAt: string | null
+}
+
+export type ConversationSummary = {
+  matchId: string
+  partnerId: string
+  partnerName: string
+  partnerAvatarPath: string | null
+  personality: string | null
+  partnerInterests: string[]
+  partnerAreaLabel: string
+  lastMessage: string | null
+  lastMessageAt: string | null
+  lastSender: string | null
+  unreadCount: number
+}
+
+export interface ChatRepo {
+  /** Todas las conversaciones del usuario; sin mensajes = nuevo match. */
+  listConversations(userId: string): Promise<ConversationSummary[]>
+  messages(matchId: string): Promise<ChatMessage[]>
+  send(matchId: string, sender: string, body: string): Promise<ChatMessage>
+  /** Marca como leídos los mensajes del otro. */
+  markRead(matchId: string, userId: string): Promise<void>
+  getState(matchId: string): Promise<string | null>
+  setState(matchId: string, node: string): Promise<void>
+  unreadTotal(userId: string): Promise<number>
 }
 
 export interface MediaRepo {

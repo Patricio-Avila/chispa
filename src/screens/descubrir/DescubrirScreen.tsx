@@ -7,15 +7,17 @@ import { ProfileCard } from '../../components/ProfileCard'
 import { ActionBar } from '../../components/ActionBar'
 import { Button } from '../../components/Button'
 import { FiltersSheet } from './FiltersSheet'
+import { MatchModal } from './MatchModal'
 import './DescubrirScreen.css'
 
 export function DescubrirScreen() {
   const navigate = useNavigate()
-  const { status, cards, userInterests, zoneLabel } = useDeckStore()
+  const { status, cards, userInterests, zoneLabel, lastMatch } = useDeckStore()
   const load = useDeckStore((s) => s.load)
   const act = useDeckStore((s) => s.act)
   const likeMedia = useDeckStore((s) => s.likeMedia)
   const widenDistance = useDeckStore((s) => s.widenDistance)
+  const clearMatch = useDeckStore((s) => s.clearMatch)
 
   const [filtersOpen, setFiltersOpen] = useState(false)
   const [flyOut, setFlyOut] = useState<SwipeDirection | null>(null)
@@ -130,6 +132,8 @@ export function DescubrirScreen() {
       )}
 
       <FiltersSheet open={filtersOpen} onClose={() => setFiltersOpen(false)} />
+
+      {lastMatch && <MatchModal match={lastMatch} onClose={clearMatch} />}
     </div>
   )
 }

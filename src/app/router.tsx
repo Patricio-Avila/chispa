@@ -10,6 +10,8 @@ import { MapaScreen } from '../screens/mapa/MapaScreen'
 import { GenerandoScreen } from '../screens/generando/GenerandoScreen'
 import { DescubrirScreen } from '../screens/descubrir/DescubrirScreen'
 import { PersonaScreen } from '../screens/persona/PersonaScreen'
+import { ConversacionesScreen } from '../screens/conversaciones/ConversacionesScreen'
+import { ChatScreen } from '../screens/chat/ChatScreen'
 
 export const router = createHashRouter([
   { path: '/', element: <LoadingScreen /> },
@@ -22,7 +24,7 @@ export const router = createHashRouter([
   { path: '/mapa', element: <MapaScreen /> },
   { path: '/generando', element: <GenerandoScreen /> },
   { path: '/persona/:id', element: <PersonaScreen /> },
-  { path: '/chat/:matchId', element: <PlaceholderScreen title="Chat" phase={4} /> },
+  { path: '/chat/:matchId', element: <ChatScreen /> },
   { path: '/perfil/editar', element: <PlaceholderScreen title="Editar perfil" phase={7} /> },
   { path: '/perfil/vista', element: <PlaceholderScreen title="Ver cómo me ven" phase={7} /> },
 
@@ -32,7 +34,7 @@ export const router = createHashRouter([
     children: [
       { path: '/descubrir', element: <DescubrirScreen /> },
       { path: '/likes', element: <PlaceholderScreen title="Likes" phase={5} /> },
-      { path: '/conversaciones', element: <PlaceholderScreen title="Conversaciones" phase={4} /> },
+      { path: '/conversaciones', element: <ConversacionesScreen /> },
       { path: '/perfil', element: <PlaceholderScreen title="Perfil" phase={7} /> },
     ],
   },
