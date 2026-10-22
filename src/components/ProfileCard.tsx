@@ -19,6 +19,8 @@ type ProfileCardProps = {
   person: ProfilePerson
   /** Intereses del usuario local, para resaltar los comunes. */
   commonWith: string[]
+  /** Texto de distancia/zona a mostrar; por defecto "X km · zona". */
+  distanceText?: string
   onLikeMedia?: (mediaId: string | null) => void
   onInfoTap?: () => void
 }
@@ -95,6 +97,7 @@ function useCarouselItems(person: ProfilePerson): CarouselItem[] {
 export function ProfileCard({
   person,
   commonWith,
+  distanceText,
   onLikeMedia,
   onInfoTap,
 }: ProfileCardProps) {
@@ -131,7 +134,7 @@ export function ProfileCard({
           />
         </div>
         <span className="profile-card__distance">
-          {roundedDistance(person.distanceKm)} · {person.areaLabel}
+          {distanceText ?? `${roundedDistance(person.distanceKm)} · ${person.areaLabel}`}
         </span>
         <div className="profile-card__interests">
           {person.interests.slice(0, 4).map((interest) => (

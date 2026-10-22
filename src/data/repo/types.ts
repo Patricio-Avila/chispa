@@ -21,7 +21,7 @@ export type AppUser = {
   areaLabel: string | null
 }
 
-/** Borrador del registro: todo opcional mientras se llena. */
+/** Borrador del registro/edición: todo opcional mientras se llena. */
 export type UserDraft = {
   name?: string
   birthdate?: string
@@ -30,6 +30,7 @@ export type UserDraft = {
   ageMin?: number
   ageMax?: number
   maxDistanceKm?: number
+  bio?: string
 }
 
 export type OnboardingStep = 'registro' | 'medios' | 'ubicacion' | 'done'

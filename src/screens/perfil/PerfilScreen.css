@@ -1,0 +1,121 @@
+.perfil {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-4) var(--space-6);
+}
+
+.perfil__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.perfil__photo {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--color-surface);
+  box-shadow: var(--shadow-button);
+  background: var(--color-surface-2);
+  flex-shrink: 0;
+}
+
+.perfil__photo--empty {
+  display: block;
+}
+
+.perfil__header-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.perfil__zone {
+  color: var(--color-text-muted);
+}
+
+.perfil__bio {
+  color: var(--color-text);
+}
+
+.perfil__section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.perfil__section-title {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.perfil__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.perfil__chip {
+  font-size: 13px;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  background: var(--color-surface-2);
+}
+
+.perfil__facts {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.perfil__facts div {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.perfil__facts dt {
+  color: var(--color-text-muted);
+  font-size: 14px;
+}
+
+.perfil__facts dd {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  text-align: right;
+}
+
+.perfil__actions {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding-top: var(--space-4);
+}
+
+.perfil__danger {
+  min-height: 44px;
+  border: 0;
+  background: transparent;
+  color: var(--color-like);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.perfil__sheet-text {
+  color: var(--color-text-muted);
+}
+
+.btn.perfil__delete-confirm {
+  background: var(--color-like);
+}

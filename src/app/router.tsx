@@ -1,8 +1,8 @@
 import { createHashRouter } from 'react-router-dom'
 import { RootLayout } from './RootLayout'
+import { ScreenError } from './ScreenError'
 import { AppShell } from './AppShell'
 import { LoadingScreen } from '../screens/loading/LoadingScreen'
-import { PlaceholderScreen } from '../screens/placeholder/PlaceholderScreen'
 import { BienvenidaScreen } from '../screens/bienvenida/BienvenidaScreen'
 import { RegistroScreen } from '../screens/registro/RegistroScreen'
 import { MediosScreen } from '../screens/medios/MediosScreen'
@@ -13,11 +13,15 @@ import { DescubrirScreen } from '../screens/descubrir/DescubrirScreen'
 import { PersonaScreen } from '../screens/persona/PersonaScreen'
 import { ConversacionesScreen } from '../screens/conversaciones/ConversacionesScreen'
 import { LikesScreen } from '../screens/likes/LikesScreen'
+import { PerfilScreen } from '../screens/perfil/PerfilScreen'
+import { EditarScreen } from '../screens/perfil/EditarScreen'
+import { VistaScreen } from '../screens/perfil/VistaScreen'
 import { ChatScreen } from '../screens/chat/ChatScreen'
 
 export const router = createHashRouter([
   {
     element: <RootLayout />,
+    errorElement: <ScreenError />,
     children: [
   { path: '/', element: <LoadingScreen /> },
 
@@ -30,8 +34,8 @@ export const router = createHashRouter([
   { path: '/generando', element: <GenerandoScreen /> },
   { path: '/persona/:id', element: <PersonaScreen /> },
   { path: '/chat/:matchId', element: <ChatScreen /> },
-  { path: '/perfil/editar', element: <PlaceholderScreen title="Editar perfil" phase={7} /> },
-  { path: '/perfil/vista', element: <PlaceholderScreen title="Ver cómo me ven" phase={7} /> },
+  { path: '/perfil/editar', element: <EditarScreen /> },
+  { path: '/perfil/vista', element: <VistaScreen /> },
 
   /* Pestañas con barra inferior / riel lateral */
   {
@@ -40,7 +44,7 @@ export const router = createHashRouter([
       { path: '/descubrir', element: <DescubrirScreen /> },
       { path: '/likes', element: <LikesScreen /> },
       { path: '/conversaciones', element: <ConversacionesScreen /> },
-      { path: '/perfil', element: <PlaceholderScreen title="Perfil" phase={7} /> },
+      { path: '/perfil', element: <PerfilScreen /> },
     ],
   },
     ],

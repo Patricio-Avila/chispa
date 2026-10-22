@@ -1,0 +1,114 @@
+﻿.media-manager {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.media-manager__error {
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-sm);
+  background: var(--color-like-soft);
+  color: var(--color-like);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.media-manager__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-2);
+}
+
+.media-manager__tile {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  user-select: none;
+}
+
+.media-manager__tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+}
+
+.media-manager__tile--dragging {
+  opacity: 0.7;
+  outline: 2px solid var(--color-primary);
+  z-index: 1;
+}
+
+.media-manager__tile--pending {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-muted);
+}
+
+.media-manager__spinner {
+  animation: media-manager-spin 0.9s linear infinite;
+}
+
+@keyframes media-manager-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.media-manager__add {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  border: 1.5px dashed var(--color-border-strong);
+  background: var(--color-surface-2);
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.media-manager__badge {
+  position: absolute;
+  bottom: 6px;
+  left: 6px;
+  padding: 3px 8px;
+  border-radius: var(--radius-pill);
+  background: rgba(42, 26, 31, 0.66);
+  color: #ffffff;
+}
+
+.media-manager__remove {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: rgba(42, 26, 31, 0.66);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.media-manager__video-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-2);
+}
+
+.media-manager__tile--video {
+  aspect-ratio: 3 / 4;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .media-manager__spinner {
+    animation: none;
+  }
+}

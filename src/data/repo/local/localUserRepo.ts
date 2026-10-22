@@ -66,7 +66,8 @@ export const localUserRepo: UserRepo = {
            seeking = coalesce($5::text[], seeking),
            age_min = coalesce($6, age_min),
            age_max = coalesce($7, age_max),
-           max_distance_km = coalesce($8, max_distance_km)
+           max_distance_km = coalesce($8, max_distance_km),
+           bio = coalesce($9, bio)
          where id = $1`,
         [
           existingId,
@@ -77,6 +78,7 @@ export const localUserRepo: UserRepo = {
           draft.ageMin ?? null,
           draft.ageMax ?? null,
           draft.maxDistanceKm ?? null,
+          draft.bio ?? null,
         ],
       )
       return existingId

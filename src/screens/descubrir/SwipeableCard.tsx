@@ -15,8 +15,14 @@ type SwipeableCardProps = {
 const DRAG_START_PX = 8
 const RATIO_THRESHOLD = 0.3
 const VELOCITY_THRESHOLD = 0.5 // px/ms
-const MAX_ROTATION = 12
 const EXIT_MS = 260
+
+/** Sin rotaciones con prefers-reduced-motion (CLAUDE.md §7). */
+const MAX_ROTATION =
+  typeof window !== 'undefined' &&
+  window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    ? 0
+    : 12
 
 const LABELS: Record<SwipeDirection, string> = {
   skip: 'SKIP',
