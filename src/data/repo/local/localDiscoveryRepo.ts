@@ -51,6 +51,13 @@ export const localDiscoveryRepo: DiscoveryRepo = {
          values ($1, 'avatar', 0, 'static', $2)`,
         [id, spec.avatarPath],
       )
+      if (spec.scenePath !== null) {
+        await txQuery(
+          `insert into media (user_id, kind, position, storage, path)
+           values ($1, 'avatar', 1, 'static', $2)`,
+          [id, spec.scenePath],
+        )
+      }
       if (spec.videoIndex !== null && videos[spec.videoIndex]) {
         const video = videos[spec.videoIndex]!
         await txQuery(

@@ -11,12 +11,13 @@ import {
   type Rng,
 } from './prng'
 import { BIO_TEMPLATES, INTERESTS, NAMES, PERSONALITIES } from './catalogs.es'
-import { AVATAR_IMAGES } from './avatars'
+import { AVATAR_IMAGES, PROFILE_SCENES } from './avatars'
 import type { Gender } from '../data/repo/types'
 
 export const SEED_VERSION = 1
 export const DUMMIES_PER_ZONE = 40
 const VIDEO_RATIO = 0.3
+const SCENE_RATIO = 0.3
 
 export type ZoneInput = {
   zoneKey: string
@@ -46,6 +47,8 @@ export type DummySpec = {
   zoneKey: string
   /** Índice en videos.json, o null si este dummy no lleva video. */
   videoIndex: number | null
+  /** Escena Lottie animada del carrusel, o null. */
+  scenePath: string | null
 }
 
 const GENDERS: Gender[] = ['mujer', 'hombre', 'no_binario']
@@ -129,6 +132,10 @@ export function generateZoneDummies(
       zoneKey: zone.zoneKey,
       videoIndex:
         hasVideo && videoCount > 0 ? Math.floor(videoRoll * videoCount) : null,
+      scenePath:
+        rng() < SCENE_RATIO && PROFILE_SCENES.length > 0
+          ? PROFILE_SCENES[Math.floor(rng() * PROFILE_SCENES.length)]!
+          : null,
     })
   }
   return dummies

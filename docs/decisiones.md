@@ -46,6 +46,18 @@ de forma determinista con el PRNG de la zona. El generador SVG por piezas
 no binario se usa el conjunto completo mientras producto entrega
 ilustraciones propias.
 
+### Escenas Lottie animadas en el carrusel de dummies
+**Fecha:** 2026-10-22
+
+Producto entregó una animación Lottie de escena de perfil
+("Chispa_Valeria_Playa", 264×276, loop de 3 s). Se integra como segundo
+medio del carrusel para ~30% de los dummies (asignación determinista con
+el PRNG de la zona), en `public/dummies/lottie/`. Se guarda como fila
+`media` kind `avatar` storage `static` posición 1 — el esquema no cambia;
+el carrusel detecta `.json`/`.lottie` y lo reproduce con dotLottie
+(fotograma fijo con `prefers-reduced-motion`). Más escenas solo se
+agregan a `PROFILE_SCENES` en `src/sim/avatars.ts`.
+
 ### Scripts de npm
 `npm run build` corre `tsc --noEmit && vite build` con un solo tsconfig
 (sin project references) para mantener la configuración mínima.

@@ -26,6 +26,9 @@ export const AVATAR_IMAGES: Record<Gender, readonly string[]> = {
   no_binario: [...HOMBRE_IMAGES, ...MUJER_IMAGES],
 }
 
+/** Escenas Lottie animadas para el carrusel (provistas por producto). */
+export const PROFILE_SCENES = ['dummies/lottie/escena-playa.json'] as const
+
 export const BACKGROUNDS = [
   '#FFE3D8', '#FFD166', '#FDE4EF', '#DCEFD6', '#CFE3F5', '#F1E3DC',
 ] as const

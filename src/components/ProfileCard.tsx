@@ -40,8 +40,10 @@ function useCarouselItems(person: ProfilePerson): CarouselItem[] {
       for (const row of rows) {
         if (row.kind === 'avatar') {
           if (row.storage === 'static') {
+            const isLottie =
+              row.path.endsWith('.json') || row.path.endsWith('.lottie')
             loaded.push({
-              kind: 'photo',
+              kind: isLottie ? 'lottie' : 'photo',
               url: import.meta.env.BASE_URL + row.path,
               mediaId: row.id,
             })

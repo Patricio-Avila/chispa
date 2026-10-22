@@ -1,11 +1,22 @@
-import { useEffect, useRef, useState } from 'react'
+import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import { Play, Heart } from '@phosphor-icons/react'
 import { AvatarIllustration } from './AvatarIllustration'
 import './MediaCarousel.css'
 
+const DotLottieReact = lazy(() =>
+  import('@lottiefiles/dotlottie-react').then((m) => ({
+    default: m.DotLottieReact,
+  })),
+)
+
+const REDUCED_MOTION =
+  typeof window !== 'undefined' &&
+  window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
 export type CarouselItem =
   | { kind: 'avatar'; seed: number; mediaId: string | null }
   | { kind: 'photo'; url: string; mediaId: string | null }
+  | { kind: 'lottie'; url: string; mediaId: string | null }
   | { kind: 'video'; url: string; posterUrl: string | null; durationS: number | null; mediaId: string | null }
 
 type MediaCarouselProps = {
@@ -89,6 +100,17 @@ export function MediaCarousel({ items, personName, onLike }: MediaCarouselProps)
       )}
       {current.kind === 'photo' && (
         <img className="carousel__media" src={current.url} alt={`Foto de ${personName}`} />
+      )}
+      {current.kind === 'lottie' && (
+        <Suspense fallback={<span className="carousel__media" />}>
+          <DotLottieReact
+            className="carousel__media carousel__media--lottie"
+            src={current.url}
+            loop
+            autoplay={!REDUCED_MOTION}
+            layout={{ fit: 'cover', align: [0.5, 0.5] }}
+          />
+        </Suspense>
       )}
       {current.kind === 'video' && (
         <>
