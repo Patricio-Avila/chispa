@@ -93,3 +93,11 @@ local con `zoom=12` y `location_bias_scale=0.4`, reintenta sin sesgo si
 la búsqueda local no arroja nada, y muestra "Buscando…" mientras espera.
 El debounce de 350 ms, mínimo 3 caracteres, `limit=5`, caché y la
 prohibición de Nominatim (CLAUDE.md §3) se conservan.
+
+### El gesto de Pasar ahora es hacia arriba
+Producto pidió invertirlo: arrastrar hacia abajo choca con el gesto de
+recargar la pantalla (pull-to-refresh) del navegador en celulares. Pasar
+se lanza de abajo hacia arriba; hacia abajo la tarjeta ahora se resiste.
+CLAUDE.md §6 quedó actualizado. La tarjeta ya tenía `touch-action: none`
+y el body `overscroll-behavior-y: none`, pero algunos navegadores
+disparan el refresh de todos modos.

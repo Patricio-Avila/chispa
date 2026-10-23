@@ -1,4 +1,4 @@
-# CLAUDE.md — POC "Chispa": simulador de citas tipo Tinder
+﻿# CLAUDE.md — POC "Chispa": simulador de citas tipo Tinder
 
 > Nombre de trabajo: **Chispa** (puede cambiar). Este archivo es la fuente de verdad del proyecto. Léelo completo antes de escribir código.
 
@@ -146,11 +146,11 @@ docs/
 | Acción | Gesto | Botón | Qué hace |
 |---|---|---|---|
 | **Skip** | Arrastrar a la izquierda | ✕ gris | Descarta el perfil. No vuelve a aparecer. |
-| **Pasar** | Arrastrar hacia abajo | Doble flecha ámbar | Lo deja para después; vuelve al **final** de la baraja. |
+| **Pasar** | Lanzar hacia arriba | Doble flecha ámbar | Lo deja para después; vuelve al **final** de la baraja. |
 | **Match** | Arrastrar a la derecha | Corazón verde | Muestra interés. Si el dummy también te quiere, se crea un match. |
 | **Like** | Doble toque sobre una foto o video | Corazón rosa sobre el medio | Reacción a ese medio en específico. **No** intenta match. |
 
-- Umbral de arrastre: 30% del ancho (o alto, para Pasar) o velocidad mayor a 0.5 px/ms.
+- Umbral de arrastre: 30% del ancho (o alto, para Pasar, hacia arriba) o velocidad mayor a 0.5 px/ms. Pasar va hacia arriba porque arrastrar hacia abajo es el gesto de recargar del navegador.
 - Mientras se arrastra, la tarjeta rota hasta ±12° y aparece la etiqueta "SKIP", "PASAR" o "MATCH".
 - Glosario: **Match** con mayúscula es la acción; **match** con minúscula es el resultado cuando ambos se eligen.
 

@@ -64,7 +64,7 @@ export function SwipeableCard({
         ? { dx: -width * 1.5, dy: lastDelta.current.dy }
         : direction === 'match'
           ? { dx: width * 1.5, dy: lastDelta.current.dy }
-          : { dx: lastDelta.current.dx, dy: height * 1.2 }
+          : { dx: lastDelta.current.dx, dy: -height * 1.2 }
     setTransform(target.dx, target.dy, true)
     window.setTimeout(() => {
       onSwipe(direction)
@@ -77,7 +77,7 @@ export function SwipeableCard({
   }, [forceDirection])
 
   function directionFor(dx: number, dy: number): SwipeDirection | null {
-    if (Math.abs(dy) > Math.abs(dx) && dy > 0) return 'pasar'
+    if (Math.abs(dy) > Math.abs(dx) && dy < 0) return 'pasar'
     if (dx > 0) return 'match'
     if (dx < 0) return 'skip'
     return null
@@ -98,8 +98,9 @@ export function SwipeableCard({
       dragging.current = true
       ref.current?.setPointerCapture(e.pointerId)
     }
-    // Hacia arriba la tarjeta se resiste (solo Pasar arrastra hacia abajo).
-    const dampedDy = dy < 0 ? dy * 0.2 : dy
+    // Hacia abajo la tarjeta se resiste (Pasar se lanza hacia arriba;
+    // arrastrar hacia abajo es el gesto de recargar del navegador).
+    const dampedDy = dy > 0 ? dy * 0.2 : dy
     lastDelta.current = { dx, dy: dampedDy }
     setTransform(dx, dampedDy, false)
 
@@ -107,7 +108,7 @@ export function SwipeableCard({
     const width = el?.offsetWidth ?? 320
     const dir = directionFor(dx, dampedDy)
     const strongEnough =
-      dir === 'pasar' ? dampedDy > width * 0.12 : Math.abs(dx) > width * 0.12
+      dir === 'pasar' ? -dampedDy > width * 0.12 : Math.abs(dx) > width * 0.12
     setLabel(dir && strongEnough ? dir : null)
   }
 
@@ -128,7 +129,7 @@ export function SwipeableCard({
     const vy = Math.abs(dy) / elapsed
 
     const dir = directionFor(dx, dy)
-    if (dir === 'pasar' && (dy > height * RATIO_THRESHOLD || vy > VELOCITY_THRESHOLD)) {
+    if (dir === 'pasar' && (-dy > height * RATIO_THRESHOLD || vy > VELOCITY_THRESHOLD)) {
       exit('pasar')
       return
     }
