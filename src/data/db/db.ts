@@ -1,5 +1,6 @@
 import { PGliteWorker } from '@electric-sql/pglite/worker'
 import migration001 from './migrations/001_init.sql?raw'
+import migration002 from './migrations/002_avatar_catalog.sql?raw'
 
 /**
  * Capa mínima de acceso a datos para la Fase 1.
@@ -22,6 +23,7 @@ function getDb(): PGliteWorker {
 
 const MIGRATIONS: { version: number; sql: string }[] = [
   { version: 1, sql: migration001 },
+  { version: 2, sql: migration002 },
 ]
 
 let initPromise: Promise<void> | null = null

@@ -61,3 +61,13 @@ agregan a `PROFILE_SCENES` en `src/sim/avatars.ts`.
 ### Scripts de npm
 `npm run build` corre `tsc --noEmit && vite build` con un solo tsconfig
 (sin project references) para mantener la configuración mínima.
+
+### Catálogo ampliado de avatares (22 ilustraciones nuevas)
+Producto entregó 23 imágenes más (carpeta Chipo); una era duplicado exacto
+(mismo hash MD5), así que se integraron 22: 13 mujeres y 9 hombres, ya
+clasificadas por género y redimensionadas a 512 px (~30 KB cada una) para
+no inflar el precache de la PWA. El catálogo queda en 29 (17 mujeres,
+12 hombres). La migración `002_avatar_catalog.sql` redistribuye los
+avatares de dummies ya sembrados usando `avatar_seed` (determinista),
+para que las zonas existentes también muestren la variedad nueva sin
+re-sembrar.

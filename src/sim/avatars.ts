@@ -11,6 +11,15 @@ const HOMBRE_IMAGES = [
   'dummies/avatars/hombre-1.jpg',
   'dummies/avatars/hombre-2.jpg',
   'dummies/avatars/hombre-3.jpg',
+  'dummies/avatars/hombre-4.jpg',
+  'dummies/avatars/hombre-5.jpg',
+  'dummies/avatars/hombre-6.jpg',
+  'dummies/avatars/hombre-7.jpg',
+  'dummies/avatars/hombre-8.jpg',
+  'dummies/avatars/hombre-9.jpg',
+  'dummies/avatars/hombre-10.jpg',
+  'dummies/avatars/hombre-11.jpg',
+  'dummies/avatars/hombre-12.jpg',
 ]
 
 const MUJER_IMAGES = [
@@ -18,6 +27,19 @@ const MUJER_IMAGES = [
   'dummies/avatars/mujer-2.jpg',
   'dummies/avatars/mujer-3.jpg',
   'dummies/avatars/mujer-4.jpg',
+  'dummies/avatars/mujer-5.jpg',
+  'dummies/avatars/mujer-6.jpg',
+  'dummies/avatars/mujer-7.jpg',
+  'dummies/avatars/mujer-8.jpg',
+  'dummies/avatars/mujer-9.jpg',
+  'dummies/avatars/mujer-10.jpg',
+  'dummies/avatars/mujer-11.jpg',
+  'dummies/avatars/mujer-12.jpg',
+  'dummies/avatars/mujer-13.jpg',
+  'dummies/avatars/mujer-14.jpg',
+  'dummies/avatars/mujer-15.jpg',
+  'dummies/avatars/mujer-16.jpg',
+  'dummies/avatars/mujer-17.jpg',
 ]
 
 export const AVATAR_IMAGES: Record<Gender, readonly string[]> = {
