@@ -11,7 +11,6 @@ import {
   userRepo,
   type DeckRow,
 } from '../data/repo'
-import { zoneKeyFor } from './prng'
 import { passesHardFilters, type ScoringProfile } from './scoring'
 import { ageFromBirthdate } from '../screens/registro/age'
 import { notify } from '../services/notifications'
@@ -92,7 +91,6 @@ async function emitLike(): Promise<void> {
 
   const rows = await discoveryRepo.getDeckRows(
     user.id,
-    zoneKeyFor(location.lat, location.lng),
     location.lat,
     location.lng,
   )

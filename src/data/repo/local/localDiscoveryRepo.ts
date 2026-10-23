@@ -133,7 +133,6 @@ export const localDiscoveryRepo: DiscoveryRepo = {
 
   async getDeckRows(
     userId: string,
-    zoneKey: string,
     centerLat: number,
     centerLng: number,
   ): Promise<DeckRow[]> {
@@ -169,13 +168,13 @@ export const localDiscoveryRepo: DiscoveryRepo = {
          group by to_user
        ) p on p.to_user = d.id
        where d.is_dummy
-         and d.zone_key = $4
+         and d.lat is not null
          and not exists (
            select 1 from swipe s
            where s.from_user = $1 and s.to_user = d.id
              and s.action in ('skip', 'match')
          )`,
-      [userId, centerLat, centerLng, zoneKey],
+      [userId, centerLat, centerLng],
     )
     return rows.map((row) => ({
       id: row.id,

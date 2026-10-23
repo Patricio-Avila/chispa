@@ -103,7 +103,6 @@ export const useDeckStore = create<DeckState>((set, get) => ({
 
     const rows = await discoveryRepo.getDeckRows(
       user.id,
-      zoneKey,
       location.lat,
       location.lng,
     )

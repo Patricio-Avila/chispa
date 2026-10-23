@@ -100,9 +100,11 @@ export interface DiscoveryRepo {
     specs: import('../../sim/seed').DummySpec[],
     videos: { path: string; poster: string; durationS: number }[],
   ): Promise<string[]>
+  /** Candidatos para la baraja: todos los dummies no deslizados, con su
+   *  distancia al centro actual. El tope de distancia lo aplica la capa de
+   *  filtros duros (maxDistanceKm), no la celda de zona. */
   getDeckRows(
     userId: string,
-    zoneKey: string,
     centerLat: number,
     centerLng: number,
   ): Promise<DeckRow[]>

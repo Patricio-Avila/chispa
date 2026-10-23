@@ -71,3 +71,16 @@ no inflar el precache de la PWA. El catálogo queda en 29 (17 mujeres,
 avatares de dummies ya sembrados usando `avatar_seed` (determinista),
 para que las zonas existentes también muestren la variedad nueva sin
 re-sembrar.
+
+### Todos los perfiles en la ZM de Monterrey y baraja por distancia
+Producto pidió que todos los perfiles ya dados de alta vivan en la zona
+metropolitana de Monterrey. La migración `003_monterrey_metro.sql` los
+reubica de forma determinista alrededor de 12 núcleos de la ZM (Centro,
+San Pedro, Guadalupe, San Nicolás, Apodaca, Escobedo, Santa Catarina,
+Cumbres, Mitras, Valle Oriente, Barrio Antiguo, Contry) y actualiza su
+`area_label`. Además, la baraja ya no filtra por la celda `zone_key`
+(~1 km, frágil al mover el pin): ahora considera todos los dummies y el
+tope lo pone el filtro duro de distancia (`maxDistanceKm`). El `zone_key`
+se conserva solo para no re-sembrar zonas ya generadas. Los likes
+sembrados al explorar una zona nueva se limitan a los dummies recién
+creados para no duplicarlos.

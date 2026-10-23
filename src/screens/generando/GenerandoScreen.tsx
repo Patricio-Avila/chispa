@@ -75,7 +75,7 @@ export function GenerandoScreen() {
           videos.length,
           areaName ?? 'Cerca de ti',
         )
-        await discoveryRepo.insertDummies(specs, videos)
+        const newIds = new Set(await discoveryRepo.insertDummies(specs, videos))
 
         // Likes previos: ~15% de los dummies con puntaje > 0.5 (§10.3).
         const userProfile: ScoringProfile = {
@@ -89,11 +89,13 @@ export function GenerandoScreen() {
         }
         const rows = await discoveryRepo.getDeckRows(
           user.id,
-          zoneKey,
           location.lat,
           location.lng,
         )
+        // Likes sembrados solo entre los dummies recién creados, para no
+        // duplicar likes de zonas ya exploradas.
         const likerIds = rows
+          .filter((row) => newIds.has(row.id))
           .filter((row) =>
             likesYouOnSeed(
               row.avatarSeed,
