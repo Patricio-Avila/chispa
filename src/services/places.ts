@@ -64,9 +64,36 @@ export function extractAreaName(response: PhotonResponse): string | null {
 
 const searchCache = new Map<string, PlaceResult[]>()
 
+const SEARCH_TIMEOUT_MS = 7000
+const RETRY_DELAY_MS = 400
+
+/** Señal combinada: la del caller (cancelación) + un timeout propio. */
+function withTimeout(signal: AbortSignal | undefined): AbortSignal {
+  const controller = new AbortController()
+  const timer = setTimeout(() => controller.abort(), SEARCH_TIMEOUT_MS)
+  controller.signal.addEventListener('abort', () => clearTimeout(timer))
+  signal?.addEventListener('abort', () => controller.abort())
+  return controller.signal
+}
+
+async function fetchPhoton(
+  params: URLSearchParams,
+  signal: AbortSignal | undefined,
+): Promise<PlaceResult[]> {
+  const response = await fetch(`${API_BASE}/api/?${params.toString()}`, {
+    signal: withTimeout(signal),
+  })
+  if (!response.ok) {
+    throw new PlacesError('La búsqueda no está disponible ahora.')
+  }
+  const data = (await response.json()) as PhotonResponse
+  return mapPhotonFeatures(data)
+}
+
 export async function searchPlaces(
   query: string,
   bias?: { lat: number; lng: number },
+  signal?: AbortSignal,
 ): Promise<PlaceResult[]> {
   const key = `${query.toLowerCase().trim()}|${bias ? `${bias.lat.toFixed(1)},${bias.lng.toFixed(1)}` : ''}`
   const cached = searchCache.get(key)
@@ -74,20 +101,41 @@ export async function searchPlaces(
 
   const params = new URLSearchParams({ q: query, limit: '5' })
   if (bias) {
+    // zoom + location_bias_scale: prioriza resultados cercanos sin
+    // excluir los lejanos (documentado por Photon).
     params.set('lat', String(bias.lat))
     params.set('lon', String(bias.lng))
+    params.set('zoom', '12')
+    params.set('location_bias_scale', '0.4')
   }
-  let response: Response
+
+  let results: PlaceResult[]
   try {
-    response = await fetch(`${API_BASE}/api/?${params.toString()}`)
-  } catch {
-    throw new PlacesError('No se pudo buscar. Revisa tu conexión.')
+    results = await fetchPhoton(params, signal)
+  } catch (error) {
+    if (signal?.aborted) throw error
+    // Un reintento breve: la instancia pública de Photon a veces falla
+    // o tarda; el segundo intento suele responder.
+    await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY_MS))
+    if (signal?.aborted) throw error
+    try {
+      results = await fetchPhoton(params, signal)
+    } catch {
+      if (signal?.aborted) throw error
+      throw new PlacesError('No se pudo buscar. Revisa tu conexión.')
+    }
   }
-  if (!response.ok) {
-    throw new PlacesError('La búsqueda no está disponible ahora.')
+
+  // Sin resultados cerca: reintenta sin sesgo (búsqueda global).
+  if (results.length === 0 && bias && !signal?.aborted) {
+    const globalParams = new URLSearchParams({ q: query, limit: '5' })
+    try {
+      results = await fetchPhoton(globalParams, signal)
+    } catch {
+      // El resultado vacío original sigue siendo válido.
+    }
   }
-  const data = (await response.json()) as PhotonResponse
-  const results = mapPhotonFeatures(data)
+
   searchCache.set(key, results)
   return results
 }

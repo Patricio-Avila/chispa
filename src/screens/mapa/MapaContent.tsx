@@ -82,7 +82,9 @@ export function MapaContent() {
 
   const [query, setQuery] = useState('')
   const [results, setResults] = useState<PlaceResult[]>([])
+  const [searching, setSearching] = useState(false)
   const debounceTimer = useRef<number | undefined>(undefined)
+  const searchAbort = useRef<AbortController | null>(null)
 
   // Estado inicial: location_context previo + modo onboarding.
   useEffect(() => {
@@ -114,18 +116,32 @@ export function MapaContent() {
     window.clearTimeout(debounceTimer.current)
     const trimmed = query.trim()
     if (trimmed.length < SEARCH_MIN_CHARS) {
+      searchAbort.current?.abort()
       setResults([])
+      setSearching(false)
       return
     }
     debounceTimer.current = window.setTimeout(() => {
-      void searchPlaces(trimmed, { lat: pin[0], lng: pin[1] })
+      // Cancela la búsqueda anterior: una respuesta lenta y vieja no debe
+      // pisar a la nueva.
+      searchAbort.current?.abort()
+      const controller = new AbortController()
+      searchAbort.current = controller
+      setSearching(true)
+      void searchPlaces(trimmed, { lat: pin[0], lng: pin[1] }, controller.signal)
         .then((found) => {
+          if (controller.signal.aborted) return
+          setSearching(false)
           setResults(found)
-          if (found.length === 0) {
-            setNotice('Sin resultados. También puedes elegir tocando el mapa.')
-          }
+          setNotice(
+            found.length === 0
+              ? 'Sin resultados. También puedes elegir tocando el mapa.'
+              : null,
+          )
         })
         .catch((error) => {
+          if (controller.signal.aborted) return
+          setSearching(false)
           setResults([])
           setNotice(
             error instanceof PlacesError
@@ -249,6 +265,11 @@ export function MapaContent() {
         </label>
       </div>
 
+      {searching && results.length === 0 && (
+        <div className="mapa__results mapa__results--loading" role="status">
+          Buscando…
+        </div>
+      )}
       {results.length > 0 && (
         <ul className="mapa__results" role="listbox" aria-label="Resultados">
           {results.map((place, index) => (

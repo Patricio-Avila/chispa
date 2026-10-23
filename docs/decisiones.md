@@ -84,3 +84,12 @@ tope lo pone el filtro duro de distancia (`maxDistanceKm`). El `zone_key`
 se conserva solo para no re-sembrar zonas ya generadas. Los likes
 sembrados al explorar una zona nueva se limitan a los dummies recién
 creados para no duplicarlos.
+
+### Búsqueda de lugares más rápida y confiable
+La instancia pública de Photon a veces tarda o falla. El buscador ahora:
+cancela la petición anterior al teclear (una respuesta vieja no pisa a la
+nueva), corta a los 7 s, reintenta una vez ante error, refuerza el sesgo
+local con `zoom=12` y `location_bias_scale=0.4`, reintenta sin sesgo si
+la búsqueda local no arroja nada, y muestra "Buscando…" mientras espera.
+El debounce de 350 ms, mínimo 3 caracteres, `limit=5`, caché y la
+prohibición de Nominatim (CLAUDE.md §3) se conservan.
