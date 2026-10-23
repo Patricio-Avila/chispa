@@ -124,6 +124,13 @@ export const localDiscoveryRepo: DiscoveryRepo = {
     }
   },
 
+  async listZoneBlobs(): Promise<{ id: string; lat: number; lng: number }[]> {
+    return query<{ id: string; lat: number; lng: number }>(
+      `select id, lat, lng from app_user
+       where is_dummy and lat is not null and lng is not null`,
+    )
+  },
+
   async getDeckRows(
     userId: string,
     zoneKey: string,

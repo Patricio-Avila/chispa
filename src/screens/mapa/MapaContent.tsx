@@ -15,7 +15,6 @@ import {
   discoveryRepo,
   locationRepo,
   userRepo,
-  type DeckRow,
   type LocationMode,
 } from '../../data/repo'
 import { getCurrentPosition } from '../../services/geo'
@@ -24,7 +23,6 @@ import {
   PlacesError,
   type PlaceResult,
 } from '../../services/places'
-import { zoneKeyFor } from '../../sim/prng'
 import { blobOffset, BLOB_RADIUS_M } from '../../sim/zoneBlobs'
 import { Button } from '../../components/Button'
 import { Chip } from '../../components/Chip'
@@ -76,7 +74,7 @@ export function MapaContent() {
   const [dateTo, setDateTo] = useState('')
   const [pickedLabel, setPickedLabel] = useState<string | null>(null)
   const [onboarding, setOnboarding] = useState(true)
-  const [blobs, setBlobs] = useState<DeckRow[]>([])
+  const [blobs, setBlobs] = useState<{ id: string; lat: number; lng: number }[]>([])
   const [busy, setBusy] = useState(false)
   const [notice, setNotice] = useState<string | null>(
     geoFailed ? 'No pudimos obtener tu ubicación. Elige tu zona tocando el mapa.' : null,
@@ -104,23 +102,11 @@ export function MapaContent() {
     })()
   }, [])
 
-  // Manchas de zona de la zona sembrada actual (nunca puntos exactos).
+  // Manchas de zona (nunca puntos exactos): todos los perfiles generados,
+  // incluidos los ya deslizados — en el mapa solo son zonas aproximadas.
+  // Las zonas aún no exploradas no tienen perfiles hasta "Explorar esta zona".
   useEffect(() => {
-    void (async () => {
-      const user = await userRepo.getLocalUser()
-      if (!user) return
-      const context = await locationRepo.get(user.id)
-      if (!context) return
-      const zoneKey = zoneKeyFor(context.lat, context.lng)
-      if (!(await discoveryRepo.isZoneSeeded(zoneKey))) return
-      const rows = await discoveryRepo.getDeckRows(
-        user.id,
-        zoneKey,
-        context.lat,
-        context.lng,
-      )
-      setBlobs(rows)
-    })()
+    void discoveryRepo.listZoneBlobs().then(setBlobs)
   }, [])
 
   // Búsqueda Photon: debounce 350 ms, mínimo 3 caracteres, sesgo al pin.
@@ -231,9 +217,11 @@ export function MapaContent() {
               center={[row.lat + offset.dLat, row.lng + offset.dLng]}
               radius={BLOB_RADIUS_M}
               pathOptions={{
-                stroke: false,
+                color: '#C21A5F',
+                weight: 1,
+                opacity: 0.4,
                 fillColor: '#E11D74',
-                fillOpacity: 0.18,
+                fillOpacity: 0.32,
               }}
               interactive={false}
             />

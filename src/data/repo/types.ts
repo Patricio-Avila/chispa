@@ -106,6 +106,9 @@ export interface DiscoveryRepo {
     centerLat: number,
     centerLng: number,
   ): Promise<DeckRow[]>
+  /** Todos los perfiles generados, para las manchas del mapa (sin filtros
+   *  ni swipes; solo posición aproximada, nunca el punto exacto). */
+  listZoneBlobs(): Promise<{ id: string; lat: number; lng: number }[]>
   /** Un perfil por id (para Detalle desde chat o likes), o null. */
   getPersonById(
     id: string,
